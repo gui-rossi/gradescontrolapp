@@ -12,4 +12,13 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "rn";
   }
+
+  @Override
+  protected List<ReactPackage> getPackages() {
+      return Arrays.asList(
+              new MainReactPackage(),
+              new ReactMaterialKitPackage()
+      );
+  }
+
 }
