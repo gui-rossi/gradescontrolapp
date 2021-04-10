@@ -6,7 +6,7 @@ function TextLink(props) {
         <View>
             <Text 
                 style={styles.txt}
-                onPress={() => props.function}    
+                onPress={props.function}  
             >
                {props.text} 
             </Text>

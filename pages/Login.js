@@ -1,18 +1,25 @@
-import Realm from "realm";
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import Picture from "../components/Picture";
 import EmailSenha from "../components/EmailSenha";
 import TextLink from "../components/TextLink";
 import BlueButton from "../components/BlueButton";
 
-function Login (props) {
+import cadastroService from "../services/cadastroService"
+
+function Login ({ navigation }) {
 
     const [mail, onChangeEmail] = useState("");
     const [senha, onChangeSenha] = useState("");
 
     function pressEntrar () {
         console.warn("natalia linda");
+    }
+
+    async function cadastrar () {
+        await cadastroService.postCadastroProfessor(mail, senha)
+        .catch(e => {throw e}) 
+        .then(v => console.warn("deu"))
     }
 
     return (
@@ -49,7 +56,7 @@ function Login (props) {
                 </Text>
                 <TextLink
                     text={"Cadastre-se"}
-                    //function={}
+                    function={() => navigation.navigate('Cadastro')}
                 />
             </View>
 
