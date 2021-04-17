@@ -5,8 +5,9 @@ import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 function BlueButton(props) {
 
     return (
-        <TouchableOpacity style={styles.button}
+        <TouchableOpacity style={props.disabled ? styles.buttonDisabled : styles.buttonEnabled}
             onPress={props.press}
+            disabled={props.disabled}
         >
             <Text style={styles.text}>
                 {props.text}
@@ -16,7 +17,13 @@ function BlueButton(props) {
 }
 
 const styles = StyleSheet.create({
-    button: {
+    buttonDisabled: {
+        opacity: 0.9,
+        padding: 16,
+        borderRadius: 6,
+        backgroundColor: "#58608E",
+    },
+    buttonEnabled: {
         padding: 16,
         borderRadius: 6,
         backgroundColor: "#111D5E",
