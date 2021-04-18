@@ -23,9 +23,16 @@ function Login ({ navigation }) {
                 setModalVisible(!modalVisible);
             })
             .then((v) => {
-                //navigation.navigate('Home')
+                if (v.data == 1)
+                    navigation.navigate('HomeAluno')
+                else if (v.data == 2)
+                    navigation.navigate('HomeProfessor')
             })
     };
+
+    function devProf () {
+        navigation.navigate('HomeProfessor');
+    }
 
     return (
         <View style={styles.page}>
@@ -64,6 +71,12 @@ function Login ({ navigation }) {
                     function={() => navigation.navigate('Cadastro')}
                 />
             </View>
+
+            <BlueButton
+                text={"Entrar DEVELOPMENT"}
+                press={devProf}
+                disabled={false}
+            />
 
             <GenericModal 
                 message={message}
