@@ -4,27 +4,38 @@ import Picture from "../components/Picture";
 import EmailSenha from "../components/EmailSenha";
 import TextLink from "../components/TextLink";
 import BlueButton from "../components/BlueButton";
+import GenericModal from '../components/GenericModal';
 
-import cadastroService from "../services/cadastroService"
+import login from "../services/loginUser"
 
 function Login ({ navigation }) {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [message, setMessage] = useState("");
 
     const [mail, onChangeEmail] = useState("");
     const [senha, onChangeSenha] = useState("");
 
-    function pressEntrar () {
-        console.warn("natalia linda");
-    }
+    async function pressEntrar () {
+        await login.loginAlunoOrProf(mail, senha)
+            .catch(e => {
+                setMessage("Usuário ou senha incorretos."); 
+                setModalVisible(!modalVisible);
+            })
+            .then((v) => {
+                if (v.data == 1)
+                    navigation.navigate('HomeAluno')
+                else if (v.data == 2)
+                    navigation.navigate('HomeProfessor')
+            })
+    };
 
-    async function cadastrar () {
-        await cadastroService.postCadastroProfessor(mail, senha)
-        .catch(e => {throw e}) 
-        .then(v => console.warn("deu"))
+    function devProf () {
+        navigation.navigate('HomeProfessor');
     }
 
     return (
         <View style={styles.page}>
-            
             <View style={styles.pic}>
                 <Picture
                     uri = {'https://reactnative.dev/img/tiny_logo.png'}
@@ -39,7 +50,7 @@ function Login ({ navigation }) {
             <View style={styles.esqueci}>
                 <TextLink
                     text={"Esqueci a senha"}
-                    //function={}
+                    function={() => navigation.navigate('Recuperacao')}
                 />
             </View>
 
@@ -47,6 +58,7 @@ function Login ({ navigation }) {
                 <BlueButton
                     text={"Entrar"}
                     press={pressEntrar}
+                    disabled={!(mail.length && senha.length >= 8)}
                 />
             </View>
 
@@ -59,6 +71,18 @@ function Login ({ navigation }) {
                     function={() => navigation.navigate('Cadastro')}
                 />
             </View>
+
+            <BlueButton
+                text={"Entrar DEVELOPMENT"}
+                press={devProf}
+                disabled={false}
+            />
+
+            <GenericModal 
+                message={message}
+                setModalVisible={setModalVisible}
+                modalVisible={modalVisible}
+            />
 
         </View>
     );
@@ -75,7 +99,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
     },
     botao: {
-        marginTop: 90,
+        marginTop: 60,
     },
     cadastro: {
         marginTop: 35,

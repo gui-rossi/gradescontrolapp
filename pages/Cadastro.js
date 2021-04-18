@@ -1,37 +1,47 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, SafeAreaView, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Button } from 'react-native';
 import BlueButton from "../components/BlueButton";
 import InputField from '../components/InputField';
 
+import { Formik } from 'formik'
+import * as yup from 'yup'
+
 import cadastroService from "../services/cadastroService"
+import GenericModal from '../components/GenericModal';
 
 function Cadastro({ navigation }) {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [message, setMessage] = useState("");
 
-    const [nome, onChangeNome] = useState("");
-    const [celular, onChangeCelular] = useState("");
-    const [mail, onChangeEmail] = useState("");
-    const [senha, onChangeSenha] = useState("");
-    const [repetirSenha, onChangeRepetirSenha] = useState("");
+    useEffect(() => {
+        if (modalVisible == false && message == "Usuário cadastrado com sucesso."){
+            navigation.navigate('Login')
+        }
+    }, [modalVisible])
 
-    async function cadastrarProfessor (){
-        await cadastroService.postCadastroProfessor(mail, senha)
-            .catch(e => {throw e})
+    async function cadastrarProfessor (values){
+        await cadastroService.postCadastroProfessor(values.email, values.nome, values.celular, values.password)
+            .catch(e => {
+                setMessage("Usuário já cadastrado."); 
+                setModalVisible(!modalVisible);
+            })
+            .then(() => {
+                setMessage("Usuário cadastrado com sucesso."); 
+                setModalVisible(!modalVisible);
+            })
+    }
+
+    async function cadastrarAluno (values){
+        await cadastroService.postCadastroAluno(values.email, values.nome, values.celular, values.password)
+            .catch(e => {setModalVisible(!modalVisible); throw e})
             .then(() => navigation.navigate('Login'))
     }
 
-    async function cadastrarAluno (){
-        
-    }
-
-    async function onClickCadastrar () {
-        if (repetirSenha != senha){
-            console.warn("Os campos de senha diferem um do outro");
-        }else{
-            if (mail.split('@').pop().contains('utfpr'))
-                cadastrarAluno();
-            else if (mail.split('@').pop().contains('gmail'))
-                cadastrarProfessor();
-        }
+    function onClickCadastrar (values) {
+        if (values.email.split('@').pop().includes('utfpr'))
+            cadastrarAluno(values);
+        else if (values.email.split('@').pop().includes('gmail'))
+            cadastrarProfessor(values);
     }
 
     return (
@@ -42,42 +52,106 @@ function Cadastro({ navigation }) {
                         Insira seus dados:
                     </Text>
 
-                    <InputField
-                        placeholder="Nome Completo*"
-                        isSecure={false}
-                        changeText={onChangeNome}
-                    />
+                    <Formik
+                        validationSchema={cadastroValidation}
+                        initialValues={{ nome: '', email: '', celular: '', password: '', passwordConfirmation: '' }}
+                        onSubmit={values => onClickCadastrar(values)}
+                    >
+                        {({
+                            handleChange,
+                            handleBlur,
+                            handleSubmit,
+                            values,
+                            errors,
+                            isValid,
+                            dirty,
+                            touched
+                        }) => (
+                            <>
+                            <TextInput
+                                style={styles.input}
+                                underlineColorAndroid={"black"}
+                                name="nome"
+                                placeholder="Nome*"
+                                onChangeText={handleChange('nome')}
+                                onBlur={handleBlur('nome')}
+                                value={values.nome}
+                            />
+                            {(errors.nome && touched.nome) &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.nome}</Text>
+                            }
 
-                    <InputField
-                        placeholder="Celular*"
-                        isSecure={false}
-                        changeText={onChangeCelular}
-                    />
+                            <TextInput
+                                style={styles.input}
+                                underlineColorAndroid={"black"}
+                                name="email"
+                                placeholder="Email Address*"
+                                onChangeText={handleChange('email')}
+                                onBlur={handleBlur('email')}
+                                value={values.email}
+                            />
+                            {(errors.email && touched.email) &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.email}</Text>
+                            }
+                            
+                            <TextInput
+                                style={styles.input}
+                                underlineColorAndroid={"black"}
+                                name="celular"
+                                placeholder="Celular"
+                                onChangeText={handleChange('celular')}
+                                onBlur={handleBlur('celular')}
+                                value={values.celular}
+                            />
+                            {(errors.celular && touched.celular) &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.celular}</Text>
+                            }
 
-                    <InputField
-                        placeholder="E-mail*"
-                        isSecure={false}
-                        changeText={onChangeEmail}
-                    />
+                            <TextInput
+                                style={styles.input}
+                                underlineColorAndroid={"black"}
+                                name="password"
+                                placeholder="Senha*"
+                                onChangeText={handleChange('password')}
+                                onBlur={handleBlur('password')}
+                                value={values.password}
+                                secureTextEntry
+                            />
+                            {(errors.password && touched.password) &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.password}</Text>
+                            }
 
-                    <InputField
-                        placeholder="Senha*"
-                        isSecure={true}
-                        changeText={onChangeSenha}
-                    />
+                            <TextInput
+                                style={styles.input}
+                                underlineColorAndroid={"black"}
+                                name="passwordConfirmation"
+                                placeholder="Confirmação de senha*"
+                                onChangeText={handleChange('passwordConfirmation')}
+                                onBlur={handleBlur('passwordConfirmation')}
+                                value={values.passwordConfirmation}
+                                secureTextEntry
+                            />
+                            {(errors.passwordConfirmation && touched.passwordConfirmation) &&
+                                <Text style={{ fontSize: 10, color: 'red' }}>{errors.passwordConfirmation}</Text>
+                            }
 
-                    <InputField
-                        placeholder="Repetir senha*"
-                        isSecure={true}
-                        changeText={onChangeRepetirSenha}
-                    />
+                            <View style={styles.botao}>
+                                <BlueButton
+                                    text={"Cadastrar"}
+                                    press={handleSubmit}
+                                    disabled={!(isValid && dirty)}
+                                />
+                            </View>
+                            </>
+                        )}
+                    </Formik>
 
-                    <View style={styles.botao}>
-                        <BlueButton
-                            text={"Cadastrar"}
-                            press={onClickCadastrar}
-                        />
-                    </View>
+                <GenericModal 
+                    message={message}
+                    setModalVisible={setModalVisible}
+                    modalVisible={modalVisible}
+                />
+
                 </ScrollView>
             </SafeAreaView>
         </View>
@@ -85,13 +159,41 @@ function Cadastro({ navigation }) {
     );
 }
 
+const phoneRegExp = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const cadastroValidation = yup.object().shape({
+    nome: yup
+        .string()
+        .required('Nome é obrigatório.'),
+    celular: yup
+        .string().matches(phoneRegExp, 'Número de telefone inválido.'),
+    email: yup
+        .string()
+        .email("Por favor insira um email válido.")
+        .required('Email é obrigatório.'),
+    password: yup
+        .string()
+        .min(8, ({ min }) => `Senhas precisam ter pelo menos ${min} caracteres.`)
+        .required('Senha é obrigatório.'),
+    passwordConfirmation: yup
+        .string()
+        .oneOf([yup.ref('password'), null], 'Senhas precisam ser iguais.')
+  })
+
 const styles = StyleSheet.create({
     page: {
         margin: 24,
     },
     botao: {
         marginTop: 40,
-    }
+    },
+    cont: {
+        marginTop: 24,
+        width: "100%",
+    },
+    input: {
+        margin: 7,
+    },
 });
 
 export default Cadastro;
