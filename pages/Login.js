@@ -4,26 +4,31 @@ import Picture from "../components/Picture";
 import EmailSenha from "../components/EmailSenha";
 import TextLink from "../components/TextLink";
 import BlueButton from "../components/BlueButton";
+import GenericModal from '../components/GenericModal';
 
-import gets from "../services/getTest"
+import login from "../services/loginUser"
 
 function Login ({ navigation }) {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [message, setMessage] = useState("");
 
     const [mail, onChangeEmail] = useState("");
     const [senha, onChangeSenha] = useState("");
 
     async function pressEntrar () {
-        await gets.getAluno("Alumosx@utfpr.alunes.edu.br")
-            .catch(e => {throw e})
-            .then((resp) => console.warn(resp.data))
-        await gets.getProf("gui@gmail.com")
-            .catch(e => {throw e})
-            .then((resp) => console.warn(resp.data))
+        await login.loginAlunoOrProf(mail, senha)
+            .catch(e => {
+                setMessage("Usuário ou senha incorretos."); 
+                setModalVisible(!modalVisible);
+            })
+            .then((v) => {
+                //navigation.navigate('Home')
+            })
     };
 
     return (
         <View style={styles.page}>
-            
             <View style={styles.pic}>
                 <Picture
                     uri = {'https://reactnative.dev/img/tiny_logo.png'}
@@ -59,6 +64,12 @@ function Login ({ navigation }) {
                     function={() => navigation.navigate('Cadastro')}
                 />
             </View>
+
+            <GenericModal 
+                message={message}
+                setModalVisible={setModalVisible}
+                modalVisible={modalVisible}
+            />
 
         </View>
     );

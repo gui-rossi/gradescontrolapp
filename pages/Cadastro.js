@@ -11,11 +11,24 @@ import GenericModal from '../components/GenericModal';
 
 function Cadastro({ navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
+    const [message, setMessage] = useState("");
+
+    useEffect(() => {
+        if (modalVisible == false && message == "Usuário cadastrado com sucesso."){
+            navigation.navigate('Login')
+        }
+    }, [modalVisible])
 
     async function cadastrarProfessor (values){
         await cadastroService.postCadastroProfessor(values.email, values.nome, values.celular, values.password)
-            .catch(e => {setModalVisible(!modalVisible); throw e})
-            .then(() => navigation.navigate('Login'))
+            .catch(e => {
+                setMessage("Usuário já cadastrado."); 
+                setModalVisible(!modalVisible);
+            })
+            .then(() => {
+                setMessage("Usuário cadastrado com sucesso."); 
+                setModalVisible(!modalVisible);
+            })
     }
 
     async function cadastrarAluno (values){
@@ -134,8 +147,9 @@ function Cadastro({ navigation }) {
                     </Formik>
 
                 <GenericModal 
-                    message="Usuário já cadastrado."
-                    isActive={modalVisible}
+                    message={message}
+                    setModalVisible={setModalVisible}
+                    modalVisible={modalVisible}
                 />
 
                 </ScrollView>
