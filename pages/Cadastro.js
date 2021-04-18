@@ -7,18 +7,20 @@ import { Formik } from 'formik'
 import * as yup from 'yup'
 
 import cadastroService from "../services/cadastroService"
+import GenericModal from '../components/GenericModal';
 
 function Cadastro({ navigation }) {
+    const [modalVisible, setModalVisible] = useState(false);
 
     async function cadastrarProfessor (values){
         await cadastroService.postCadastroProfessor(values.email, values.nome, values.celular, values.password)
-            .catch(e => {throw e})
+            .catch(e => {setModalVisible(!modalVisible); throw e})
             .then(() => navigation.navigate('Login'))
     }
 
     async function cadastrarAluno (values){
         await cadastroService.postCadastroAluno(values.email, values.nome, values.celular, values.password)
-            .catch(e => {throw e})
+            .catch(e => {setModalVisible(!modalVisible); throw e})
             .then(() => navigation.navigate('Login'))
     }
 
@@ -41,7 +43,7 @@ function Cadastro({ navigation }) {
                         validationSchema={cadastroValidation}
                         initialValues={{ nome: '', email: '', celular: '', password: '', passwordConfirmation: '' }}
                         onSubmit={values => onClickCadastrar(values)}
-                        >
+                    >
                         {({
                             handleChange,
                             handleBlur,
@@ -127,10 +129,14 @@ function Cadastro({ navigation }) {
                                     disabled={!(isValid && dirty)}
                                 />
                             </View>
-
                             </>
                         )}
                     </Formik>
+
+                <GenericModal 
+                    message="Usuário já cadastrado."
+                    isActive={modalVisible}
+                />
 
                 </ScrollView>
             </SafeAreaView>

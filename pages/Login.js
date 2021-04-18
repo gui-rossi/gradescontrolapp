@@ -5,22 +5,21 @@ import EmailSenha from "../components/EmailSenha";
 import TextLink from "../components/TextLink";
 import BlueButton from "../components/BlueButton";
 
-import cadastroService from "../services/cadastroService"
+import gets from "../services/getTest"
 
 function Login ({ navigation }) {
 
     const [mail, onChangeEmail] = useState("");
     const [senha, onChangeSenha] = useState("");
 
-    function pressEntrar () {
-        console.warn("natalia linda");
-    }
-
-    async function cadastrar () {
-        await cadastroService.postCadastroProfessor(mail, senha)
-        .catch(e => {throw e}) 
-        .then(v => console.warn("deu"))
-    }
+    async function pressEntrar () {
+        await gets.getAluno("Alumosx@utfpr.alunes.edu.br")
+            .catch(e => {throw e})
+            .then((resp) => console.warn(resp.data))
+        await gets.getProf("gui@gmail.com")
+            .catch(e => {throw e})
+            .then((resp) => console.warn(resp.data))
+    };
 
     return (
         <View style={styles.page}>
@@ -39,7 +38,7 @@ function Login ({ navigation }) {
             <View style={styles.esqueci}>
                 <TextLink
                     text={"Esqueci a senha"}
-                    //function={}
+                    function={() => navigation.navigate('Recuperacao')}
                 />
             </View>
 
@@ -47,6 +46,7 @@ function Login ({ navigation }) {
                 <BlueButton
                     text={"Entrar"}
                     press={pressEntrar}
+                    disabled={!(mail.length && senha.length >= 8)}
                 />
             </View>
 
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
     },
     botao: {
-        marginTop: 90,
+        marginTop: 60,
     },
     cadastro: {
         marginTop: 35,
