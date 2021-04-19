@@ -1,12 +1,17 @@
 import React from 'react';
+import { TouchableOpacity } from 'react-native';
 import { View, StyleSheet, Text } from "react-native";
 
 function MenuButton(props) {
     return (
         <>
+        <TouchableOpacity
+            onPress={props.press}
+        >
             <View style={styles.dash}></View>
             <View style={styles.dash}></View>
             <View style={styles.dash}></View>
+        </TouchableOpacity>
         </>
     );
 }
