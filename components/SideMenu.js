@@ -9,7 +9,7 @@ function SideMenu(props) {
     return (
       <View style={styles.centeredView}>
         <Modal
-          animationType="fade"
+          animationType="slide"
           transparent={true}
           visible={props.modalVisible}
           onRequestClose={() => {
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
   },
   centeredView: {
     flex: 1,
-    marginTop: "5%",
+    marginTop: "0%",
     alignItems: "flex-start"
   },
   modalView: {
@@ -93,8 +93,8 @@ const styles = StyleSheet.create({
     marginRight: 20,
     backgroundColor: "white",
     borderRadius: 10,
-    width: "75%",
-    height: "95%",
+    width: "100%",
+    height: "100%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
