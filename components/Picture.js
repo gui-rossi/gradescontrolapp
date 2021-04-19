@@ -19,8 +19,8 @@ function Picture(props) {
 
 const styles = StyleSheet.create({
     pic: {
-        width: 220,
-        height: 220,
+        width: 140,
+        height: 140,
     },
     cont: {
         paddingTop: 40

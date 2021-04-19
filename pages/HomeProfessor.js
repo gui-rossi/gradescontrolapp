@@ -1,8 +1,20 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Modal } from "react-native";
 import { Text, View, StyleSheet, BackHandler, Alert } from "react-native";
 import MenuButton from "../components/MenuButton";
+import SideMenu from "../components/SideMenu";
+
 
 function HomeProfessor({props, navigation}) {
+
+    const [modalVisible, setModalVisible] = useState(false);
+    const [message, setMessage] = useState("");
+
+    const [menu, setMenu] = useState(false);
+
+    function showModal () {
+      setModalVisible(!modalVisible);
+    }
 
     useEffect(() => {
         const backAction = () => {
@@ -26,29 +38,38 @@ function HomeProfessor({props, navigation}) {
     }, []);
     
     return (
+        <>
         <View style={styles.navbar}>
-            <MenuButton>
-
-            </MenuButton>
+            <MenuButton
+              press={showModal}
+            />
         </View>
+
+        <View style={modalVisible ? styles.pageWithMenu : styles.page}>
+          <SideMenu 
+            setModalVisible={setModalVisible}
+            modalVisible={modalVisible}
+          />
+        </View>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
+    page: {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#EEEEEE",
+    },
+    pageWithMenu: {
+      width: "100%",
+      height: "100%",
+      backgroundColor: "#D3D3D3",
+    },
     navbar: {
-        backgroundColor: "#00BFFF",
-        padding: 20,
-        borderRadius: 4
+      backgroundColor: "#00BFFF",
+      padding: 24,
     },
-    container: {
-      flex: 1,
-      alignItems: "center",
-      justifyContent: "center"
-    },
-    text: {
-      fontSize: 18,
-      fontWeight: "bold"
-    }
 });
 
 export default HomeProfessor;
