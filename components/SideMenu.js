@@ -1,71 +1,123 @@
-import React, { useState, useEffect } from 'react';
+import { Button } from 'native-base';
+import React, { useState, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
 import Picture from "../components/Picture";
+import TextLink from './TextLink';
 
 function SideMenu(props) {
 
-    return (
-      <View style={styles.centeredView}>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={props.modalVisible}
-          onRequestClose={() => {
-              props.setModalVisible(!props.modalVisible);
-          }}
-        >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
+  return (
 
-            <View>
-              <Picture
-                uri = {'https://reactnative.dev/img/tiny_logo.png'}
-              />
-            </View>
+    <View >
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={props.modalVisible}
+        onRequestClose={() => {
+            props.setModalVisible(!props.modalVisible);
+        }}
+      >
 
-            <View>
-              <Text style={styles.olaFulano}>Olá, fulano</Text>
-            </View>
+      <View style={styles.modalView}>
 
-            <View>
-              <Text style={styles.minhaConta}>Minha conta</Text>
-            </View>
+        <View style={ { alignItems: 'center'} }>
+          <Picture
+            uri = {'https://reactnative.dev/img/tiny_logo.png'}
+          />
 
-            <View>
-
-              <Text style={styles.options}>Meus Dados</Text>
-              <View style={styles.separator}></View>
-
-              <Text style={styles.options}>Gerenciar Notificações</Text>
-              <View style={styles.separator}></View>
-
-              <Text style={styles.options}>Alterar Senha</Text>
-              <View style={styles.separator}></View>
-
-              <Text style={styles.options}>Sair</Text>
-              <View style={styles.separator}></View>
-
-            </View>
-
-            <Pressable
-                style={[styles.button, styles.buttonClose]}
-                onPress={() => props.setModalVisible(!props.modalVisible)}
-            >
-              <Text style={styles.textStyle}>Close</Text>
-            </Pressable>
-
+          <View style={styles.textoFoto}>
+            <TextLink
+              text={"Trocar de foto"}
+              //function={}
+            />
           </View>
         </View>
 
-        </Modal>
+        <Text style={styles.olaFulano}>Olá, fulano</Text>
+
+        <View>
+          <Text style={styles.minhaConta}>Minha conta</Text>
+
+          <TouchableOpacity onPress={() => props.meusDados()}>
+            <View style={styles.line}>
+              <Text style={styles.options}>Meus Dados</Text>
+              <Icon name="chevron-right" size={15} color="#808080"/>
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.separator}></View>
+
+          {
+            props.isItGerenciarNotificacoes &&
+            <TouchableOpacity onPress={() => props.goToGerenciarNotificacoes()}>
+              <View style={styles.line}>
+                <Text style={styles.options}>Gerenciar Notificações</Text>
+                <Icon name="chevron-right" size={15} color="#808080"/>
+              </View>
+            </TouchableOpacity>
+          }
+
+          {
+            props.isItCriarTurma &&
+            <TouchableOpacity onPress={() => props.criarTurma()}>
+              <View style={styles.line}>
+                <Text style={styles.options}>Criar Turma</Text>
+                <Icon name="chevron-right" size={15} color="#808080"/>
+              </View>
+            </TouchableOpacity>
+          }
+
+          <View style={styles.separator}></View>
+
+          <TouchableOpacity onPress={() => props.alterarSenha()}>
+              <View style={styles.line}>
+                <Text style={styles.options}>Alterar Senha</Text>
+                <Icon name="chevron-right" size={15} color="#808080"/>
+              </View>
+          </TouchableOpacity>
+
+          <View style={styles.separator}></View>
+
+            <TouchableOpacity onPress={() => props.sair()}>
+              <View style={styles.line}>
+                  <Text style={styles.options}>Sair</Text>
+              </View>
+            </TouchableOpacity>
+          
+          <View style={styles.separator}></View>
+        </View>
+
+        <Pressable
+            style={[styles.button, styles.buttonClose]}
+            onPress={() => props.setModalVisible(!props.modalVisible)}
+        >
+          <Text style={styles.textStyle}>Voltar</Text>
+        </Pressable>
+
       </View>
-    );
+
+      </Modal>
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
+  textoFoto: {
+    marginTop: 10,
+  },
+  line: {
+    marginTop: 24,
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },  
   options: {
+    flexDirection: 'column',
     fontSize: 18,
     color: "#808080",
   },
@@ -89,13 +141,13 @@ const styles = StyleSheet.create({
     alignItems: "flex-start"
   },
   modalView: {
-    marginBottom: 20,
-    marginRight: 20,
+    padding: 32,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-evenly',
     backgroundColor: "white",
-    borderRadius: 10,
     width: "100%",
     height: "100%",
-    alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -113,9 +165,6 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     elevation: 2
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
   buttonClose: {
     backgroundColor: "#111D5E",
   },
@@ -124,10 +173,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
-  modalText: {
-    marginBottom: 25,
-    textAlign: "center"
-  }
 });
 
 export default SideMenu;

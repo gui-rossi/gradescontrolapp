@@ -9,6 +9,10 @@ import Recuperacao from './pages/Recuperacao'
 import HomeProfessor from './pages/HomeProfessor'
 import HomeAluno from './pages/HomeAluno'
 
+import MeusDados from './pages/MeusDados'
+// import GerenciarNotificacoes from './pages/GerenciarNotificacoes'
+import ModifyPassword from './pages/ModifyPassword'
+
 const Stack = createStackNavigator();
 
 function App () {
@@ -26,6 +30,10 @@ function App () {
         <Stack.Screen name="Recuperacao" component={Recuperacao} />
         <Stack.Screen name="HomeAluno" component={HomeAluno}/>
         <Stack.Screen name="HomeProfessor" component={HomeProfessor}/>
+        <Stack.Screen name="MeusDados" component={MeusDados}/>
+        {/* <Stack.Screen name="GerenciarNotificacoes" component={GerenciarNotificacoes}/> */}
+        <Stack.Screen name="ModifyPassword" component={ModifyPassword}/>
+
 
       </Stack.Navigator>
     </NavigationContainer>

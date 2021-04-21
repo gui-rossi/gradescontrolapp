@@ -6,7 +6,7 @@ function Picture(props) {
     
 
     return (
-        <View style={styles.cont}>
+        <View>
             <Image
                 style={styles.pic}
                 source={{uri: props.uri}}
@@ -21,9 +21,6 @@ const styles = StyleSheet.create({
     pic: {
         width: 140,
         height: 140,
-    },
-    cont: {
-        paddingTop: 40
     }
 });
 
