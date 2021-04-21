@@ -72,11 +72,13 @@ function Login ({ navigation }) {
                 />
             </View>
 
-            <BlueButton
-                text={"Entrar DEVELOPMENT"}
-                press={devProf}
-                disabled={false}
-            />
+            <View style={{marginTop: 20}}>
+                <BlueButton
+                    text={"Entrar DEVELOPMENT"}
+                    press={devProf}
+                    disabled={false}
+                />
+            </View>
 
             <GenericModal 
                 message={message}
@@ -93,6 +95,7 @@ const styles = StyleSheet.create({
         margin: 24,
     },
     pic: {
+        marginTop: 25,
         alignItems: 'center',
     },
     esqueci: {
