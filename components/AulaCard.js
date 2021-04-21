@@ -10,6 +10,10 @@ function AulaCard(props) {
         console.warn("cancelando aula")
     }
 
+    function marcarPresenca() {
+        console.warn("marcando presecna")
+    }
+
     return (
         <View style={styles.padding}>
             <TouchableOpacity
@@ -28,14 +32,36 @@ function AulaCard(props) {
                     <Text style={styles.subFont}>Status da aula: </Text>
                     <Text style={styles.subSubFont}>{props.status}</Text>
                 </View>
-                
+
+                {
+                    !props.isProf &&
+                    <View style={styles.row}>
+                        <Text style={styles.subFont}>Presença: </Text>
+                        <Text style={styles.subSubFont}>{props.presenca}</Text>
+                    </View>
+                }
+            
             </TouchableOpacity>
-            <View style={styles.link}>
-                <TextLink 
-                    text={"Cancelar aula"}
-                    function={() => cancelarAula()}
-                />
-            </View>
+            
+            {
+                props.isEmAndamento &&
+                <View style={styles.link}>
+                    <TextLink 
+                        text={"Marcar presença"}
+                        function={() => marcarPresenca()}
+                    />
+                </View>
+            }
+
+            {
+                props.isProf &&
+                <View style={styles.link}>
+                    <TextLink 
+                        text={"Cancelar aula"}
+                        function={() => cancelarAula()}
+                    />
+                </View>
+            }
         </View>
     );
 }

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Button } from 'react-native';
 import BlueButton from "../components/BlueButton";
 import InputField from '../components/InputField';
+import GoBack from '../components/GoBack';
 
 import { Formik } from 'formik'
 import * as yup from 'yup'
@@ -45,6 +46,11 @@ function Cadastro({ navigation }) {
     }
 
     return (
+        <>
+        <GoBack
+            name={"Cadastro"}
+            navigation={navigation}
+        />
         <View style={styles.page}>
             <SafeAreaView>
                 <ScrollView>
@@ -155,7 +161,7 @@ function Cadastro({ navigation }) {
                 </ScrollView>
             </SafeAreaView>
         </View>
-
+        </>
     );
 }
 
