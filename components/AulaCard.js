@@ -2,31 +2,41 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationAction } from "@react-navigation/native"
+import TextLink from './TextLink';
 
-function TurmaCard(props) {
+function AulaCard(props) {
+
+    function cancelarAula() {
+        console.warn("cancelando aula")
+    }
 
     return (
-        <TouchableOpacity
-            onPress={() => props.onPress()}
-            style={styles.padding}
-        >
-            <View>
+        <View style={styles.padding}>
+            <TouchableOpacity
+                onPress={() => props.onPress()}
+            >
                 <View style={styles.row}>
-                    <Text style={styles.font}>Turma {props.numTurma}</Text>
+                    <Text style={styles.font}>{props.tema}</Text>
                 </View>
                 
                 <View style={styles.row}>
-                    <Text style={styles.subFont}>Número de alunos: </Text>
-                    <Text style={styles.subSubFont}>{props.numAlunos}</Text>
+                    <Text style={styles.subFont}>Horário da aula: </Text>
+                    <Text style={styles.subSubFont}>{props.horario}</Text>
                 </View>
                 
                 <View style={styles.row}>
-                    <Text style={styles.subFont}>Número de aulas: </Text>
-                    <Text style={styles.subSubFont}>{props.numAulas}</Text>
+                    <Text style={styles.subFont}>Status da aula: </Text>
+                    <Text style={styles.subSubFont}>{props.status}</Text>
                 </View>
-            
+                
+            </TouchableOpacity>
+            <View style={styles.link}>
+                <TextLink 
+                    text={"Cancelar aula"}
+                    function={() => cancelarAula()}
+                />
             </View>
-        </TouchableOpacity>
+        </View>
     );
 }
 
@@ -60,7 +70,14 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         marginBottom: 8
+    },
+    link: {
+        alignItems: 'center',
+        display: 'flex',
+        flexDirection: 'row',
+        marginBottom: 8,
+        alignSelf: 'flex-end'
     }
 });
 
-export default TurmaCard;
+export default AulaCard;

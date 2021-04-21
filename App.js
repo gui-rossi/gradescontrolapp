@@ -12,6 +12,10 @@ import HomeAluno from './pages/HomeAluno'
 import MeusDados from './pages/MeusDados'
 // import GerenciarNotificacoes from './pages/GerenciarNotificacoes'
 import ModifyPassword from './pages/ModifyPassword'
+import Turma from './pages/Turma'
+import Aula from './pages/Aula'
+import AdicionarAluno from './pages/AdicionarAluno'
+import AdicionarAula from './pages/AdicionarAula'
 
 const Stack = createStackNavigator();
 
@@ -32,6 +36,10 @@ function App () {
         <Stack.Screen name="HomeProfessor" component={HomeProfessor}/>
         <Stack.Screen name="MeusDados" component={MeusDados}/>
         {/* <Stack.Screen name="GerenciarNotificacoes" component={GerenciarNotificacoes}/> */}
+        <Stack.Screen name="Turma" component={Turma}/>
+        <Stack.Screen name="Aula" component={Aula}/>
+        <Stack.Screen name="AdicionarAluno" component={AdicionarAluno}/>
+        <Stack.Screen name="AdicionarAula" component={AdicionarAula}/>
         <Stack.Screen name="ModifyPassword" component={ModifyPassword}/>
 
 

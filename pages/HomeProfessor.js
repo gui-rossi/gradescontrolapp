@@ -40,6 +40,10 @@ function HomeProfessor({props, navigation}) {
       navigation.navigate('MeusDados', {name: "Guilherme Rossi", mail: "guilherme.rossi@exxonmobil.com", celular: "(16)997536554"});
     }
 
+    function goToTurma () {
+      navigation.navigate('Turma', {name: "Turma 1", aulas: ["Queda da bastilha", "Calculo 2"], status: [0, 1]});
+    }
+
     useEffect(() => {
       const backAction = () => {
         if (navigation.isFocused())
@@ -73,52 +77,14 @@ function HomeProfessor({props, navigation}) {
 
         <SafeAreaView style={styles.scrollview}>
           <ScrollView>
-            <TurmaCard 
+            <TurmaCard
+              onPress={goToTurma}
               numTurma={1}
               numAlunos={105}
               numAulas={25}
             />
             <TurmaCard 
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-            />
-            <TurmaCard 
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-            />
-            <TurmaCard 
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-            />
-            <TurmaCard 
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-            />
-            <TurmaCard 
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-            />
-            <TurmaCard 
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-            />
-            <TurmaCard 
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-            />
-            <TurmaCard 
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-            />
-            <TurmaCard 
+              onPress={goToTurma}
               numTurma={2}
               numAlunos={69}
               numAulas={11}
