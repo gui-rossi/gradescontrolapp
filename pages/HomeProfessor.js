@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-native";
 import { Text, View, StyleSheet, BackHandler, Alert } from "react-native";
+import { NavigationAction, useNavigationState } from "@react-navigation/native"
+import { SafeAreaView } from "react-native";
+import { ScrollView } from "react-native";
+
 import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
-import { NavigationAction, useNavigationState } from "@react-navigation/native"
+import TurmaCard from "../components/TurmaCard";
 
 function HomeProfessor({props, navigation}) {
 
@@ -27,8 +31,8 @@ function HomeProfessor({props, navigation}) {
     }
 
     function goToCriarTurma () {
+      //manda registro pra tabela
       showModal();
-      navigation.navigate('CriarTurma');
     }
 
     function goToMeusDados () {
@@ -67,6 +71,61 @@ function HomeProfessor({props, navigation}) {
             />
         </View>
 
+        <SafeAreaView style={styles.scrollview}>
+          <ScrollView>
+            <TurmaCard 
+              numTurma={1}
+              numAlunos={105}
+              numAulas={25}
+            />
+            <TurmaCard 
+              numTurma={2}
+              numAlunos={69}
+              numAulas={11}
+            />
+            <TurmaCard 
+              numTurma={1}
+              numAlunos={105}
+              numAulas={25}
+            />
+            <TurmaCard 
+              numTurma={2}
+              numAlunos={69}
+              numAulas={11}
+            />
+            <TurmaCard 
+              numTurma={1}
+              numAlunos={105}
+              numAulas={25}
+            />
+            <TurmaCard 
+              numTurma={2}
+              numAlunos={69}
+              numAulas={11}
+            />
+            <TurmaCard 
+              numTurma={1}
+              numAlunos={105}
+              numAulas={25}
+            />
+            <TurmaCard 
+              numTurma={2}
+              numAlunos={69}
+              numAulas={11}
+            />
+            <TurmaCard 
+              numTurma={1}
+              numAlunos={105}
+              numAulas={25}
+            />
+            <TurmaCard 
+              numTurma={2}
+              numAlunos={69}
+              numAulas={11}
+            />
+          </ScrollView>
+        </SafeAreaView>
+
         <View style={modalVisible ? styles.pageWithMenu : styles.page}>
           <SideMenu
             meusDados={goToMeusDados}
@@ -83,6 +142,10 @@ function HomeProfessor({props, navigation}) {
 }
 
 const styles = StyleSheet.create({
+    scrollview: {
+      margin: 12,
+      height: '85%',
+    },
     page: {
       width: "100%",
       height: "100%",
@@ -94,7 +157,7 @@ const styles = StyleSheet.create({
       backgroundColor: "#D3D3D3",
     },
     navbar: {
-      backgroundColor: "#00BFFF",
+      backgroundColor: "#111D5E",
       padding: 24,
     },
 });

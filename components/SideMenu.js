@@ -65,7 +65,7 @@ function SideMenu(props) {
             props.isItCriarTurma &&
             <TouchableOpacity onPress={() => props.criarTurma()}>
               <View style={styles.line}>
-                <Text style={styles.options}>Criar Turmas</Text>
+                <Text style={styles.options}>Criar Turma</Text>
                 <Icon name="chevron-right" size={15} color="#808080"/>
               </View>
             </TouchableOpacity>
