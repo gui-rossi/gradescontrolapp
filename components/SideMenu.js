@@ -1,6 +1,7 @@
 import { Button } from 'native-base';
 import React, { useState, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
@@ -41,30 +42,51 @@ function SideMenu(props) {
         <View>
           <Text style={styles.minhaConta}>Minha conta</Text>
 
-          <View style={styles.line}>
-            <Text style={styles.options}>Meus Dados</Text>
-            <Icon name="chevron-right" size={15} color="#808080"/>
-          </View>
+          <TouchableOpacity onPress={() => props.meusDados()}>
+            <View style={styles.line}>
+              <Text style={styles.options}>Meus Dados</Text>
+              <Icon name="chevron-right" size={15} color="#808080"/>
+            </View>
+          </TouchableOpacity>
 
           <View style={styles.separator}></View>
 
-          <View style={styles.line}>
-            <Text style={styles.options}>Gerenciar Notificações</Text>
-            <Icon  name="chevron-right" size={15} color="#808080"/>
-          </View>
+          {
+            props.isItGerenciarNotificacoes &&
+            <TouchableOpacity onPress={() => props.goToGerenciarNotificacoes()}>
+              <View style={styles.line}>
+                <Text style={styles.options}>Gerenciar Notificações</Text>
+                <Icon name="chevron-right" size={15} color="#808080"/>
+              </View>
+            </TouchableOpacity>
+          }
+
+          {
+            props.isItCriarTurma &&
+            <TouchableOpacity onPress={() => props.criarTurma()}>
+              <View style={styles.line}>
+                <Text style={styles.options}>Criar Turmas</Text>
+                <Icon name="chevron-right" size={15} color="#808080"/>
+              </View>
+            </TouchableOpacity>
+          }
 
           <View style={styles.separator}></View>
 
-          <View style={styles.line}>
-            <Text style={styles.options}>Alterar Senha</Text>
-            <Icon name="chevron-right" size={15} color="#808080"/>
-          </View>
+          <TouchableOpacity onPress={() => props.alterarSenha()}>
+              <View style={styles.line}>
+                <Text style={styles.options}>Alterar Senha</Text>
+                <Icon name="chevron-right" size={15} color="#808080"/>
+              </View>
+          </TouchableOpacity>
 
           <View style={styles.separator}></View>
 
-          <View style={styles.line}>
-            <Text style={styles.options}>Sair</Text>
-          </View>
+            <TouchableOpacity onPress={() => props.sair()}>
+              <View style={styles.line}>
+                  <Text style={styles.options}>Sair</Text>
+              </View>
+            </TouchableOpacity>
           
           <View style={styles.separator}></View>
         </View>
