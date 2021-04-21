@@ -24,6 +24,14 @@ function TurmaCard(props) {
                     <Text style={styles.subFont}>Número de aulas: </Text>
                     <Text style={styles.subSubFont}>{props.numAulas}</Text>
                 </View>
+
+                {
+                    props.nomeProf &&
+                    <View style={styles.row}>
+                        <Text style={styles.subFont}>Nome do professor: </Text>
+                        <Text style={styles.subSubFont}>{props.nomeProf}</Text>
+                    </View>
+                }
             
             </View>
         </TouchableOpacity>

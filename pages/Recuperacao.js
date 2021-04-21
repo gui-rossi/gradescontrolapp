@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, SafeAreaView, ScrollView, TextInput, Button } f
 import BlueButton from "../components/BlueButton";
 import InputField from '../components/InputField';
 import GenericModal from '../components/GenericModal';
+import GoBack from '../components/GoBack';
 
 import recoverPassword from "../services/recoverPassword"
 
@@ -32,6 +33,12 @@ function Recuperacao({ props, navigation }) {
     }, [modalVisible])
 
     return (
+        <>
+        <GoBack
+            name={"Recuperação de senha"}
+            navigation={navigation}
+        />
+
         <View style={styles.page}>
             <Formik
                 validationSchema={recoverSenhaValidation}
@@ -84,6 +91,7 @@ function Recuperacao({ props, navigation }) {
             />
 
         </View>
+        </>
     );
 }
 

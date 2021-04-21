@@ -1,16 +1,18 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import BlueButton from '../components/BlueButton';
+import GoBack from '../components/GoBack';
 
 function MeusDados({props, route, navigation}) {
 
     const { name, mail, celular } = route.params;
 
-    function goBackToLastPage () {
-        navigation.goBack();
-    }
-
     return (
+        <>
+        <GoBack
+            name={"Meus dados"}
+            navigation={navigation}
+        />
         <View style={styles.page}>
             <View style={styles.row}>
                 <Text style={{fontSize: 20}}>Nome:</Text>
@@ -33,15 +35,8 @@ function MeusDados({props, route, navigation}) {
 
             <View style={styles.separator}></View>
 
-            <View style={{paddingTop: 20}}>
-                <BlueButton
-                    text={"Voltar"}
-                    press={goBackToLastPage}
-                    disabled={false}
-                />
-            </View>
-
         </View>
+        </>
     );
 }
 

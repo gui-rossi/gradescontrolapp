@@ -10,20 +10,12 @@ import AulaCard from '../components/AulaCard';
 import GoBack from '../components/GoBack';
 import AddAulaCard from '../components/AddAulaCard';
 
-function Turma({route, navigation}) {
+function TurmaAluno({route, navigation}) {
 
-    const { name, aulas, status } = route.params;
+    const { name, aulas, andamento, status } = route.params;
 
     function goToAdicionarAluno(){
         navigation.navigate('AdicionarAluno')
-    }
-
-    function inspectAula () {
-        navigation.navigate('Aula', {tema: "Queda da Bastilha", dia: "02/10/1994", hora: "08:00"});
-    }
-
-    function goToAdicionarAula(){
-        navigation.navigate('AdicionarAula')
     }
 
     return (
@@ -35,29 +27,23 @@ function Turma({route, navigation}) {
 
             <SafeAreaView style={styles.scrollview}>
                 <ScrollView>
-                    <AddAulaCard
-                        onPress={goToAdicionarAula}
-                    />
-
                     <AulaCard
-                        onPress={inspectAula}
                         tema={"Queda da Bastilha"}
                         horario={"02/10/1994 - 08:00am"}
+                        status={"Em andamento"}
+                        presenca={"Presente"}
+                        isEmAndamento={true}
+                    />
+                    <AulaCard
+                        tema={"Cálculo diferencial e integral II"}
+                        horario={"04/10/1994 - 08:00am"}
                         status={"Finalizada"}
-                        isProf={true}
+                        presenca={"Presente"}
+                        isEmAndamento={false}
                     />
                 
                 </ScrollView>
             </SafeAreaView>
-
-            
-            <View style={{alignItems: 'center'}}>
-                <BlueButton
-                    text={"Adicionar aluno"}
-                    press={goToAdicionarAluno}
-                    disabled={false}
-                />
-            </View>
 
         </>
     );
@@ -85,4 +71,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default Turma;
+export default TurmaAluno;

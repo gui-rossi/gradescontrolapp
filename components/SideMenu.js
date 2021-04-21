@@ -53,7 +53,7 @@ function SideMenu(props) {
 
           {
             props.isItGerenciarNotificacoes &&
-            <TouchableOpacity onPress={() => props.goToGerenciarNotificacoes()}>
+            <TouchableOpacity onPress={() => props.gerenciarNotificacoes()}>
               <View style={styles.line}>
                 <Text style={styles.options}>Gerenciar Notificações</Text>
                 <Icon name="chevron-right" size={15} color="#808080"/>

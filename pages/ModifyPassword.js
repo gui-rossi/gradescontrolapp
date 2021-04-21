@@ -4,6 +4,7 @@ import BlueButton from "../components/BlueButton";
 import InputField from '../components/InputField';
 import GenericModal from '../components/GenericModal';
 import { BaseNavigationContainer } from '@react-navigation/native';
+import GoBack from '../components/GoBack';
 
 import recoverPassword from "../services/recoverPassword";
 
@@ -33,6 +34,11 @@ function ModifyPassword({ props, navigation }) {
     }, [modalVisible])
 
     return (
+        <>
+        <GoBack
+            name={"Alterar senha"}
+            navigation={navigation}
+        />
         <View style={styles.page}>
             <Formik
                 validationSchema={modifySenhaValidation}
@@ -95,7 +101,7 @@ function ModifyPassword({ props, navigation }) {
 
                 <View style={styles.botao}>
                     <BlueButton
-                        text={"Alterar senha"}
+                        text={"Salvar"}
                         press={handleSubmit}
                         disabled={!(isValid && dirty)}
                     />
@@ -111,6 +117,7 @@ function ModifyPassword({ props, navigation }) {
             />
 
         </View>
+        </>
     );
 }
 
