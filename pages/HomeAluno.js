@@ -37,7 +37,7 @@ function HomeAluno({props, navigation}) {
 
     function goToMeusDados () {
       showModal();
-      navigation.navigate('MeusDados', {name: "Guilherme Rossi", mail: "guizo.rossi@gmail.com", celular: "(16)997536554"});
+      navigation.navigate('MeusDados', {name: "Guilherme Rossi", mail: "guizo.rossi@gmail.com", celular: "(11)11223344"});
     }
 
     function goToTurmaViewAluno () {
