@@ -50,19 +50,19 @@ function HomeProfessor({props, navigation}) {
       navigation.navigate('Turma', {name: "Turma 1", aulas: ["Queda da bastilha", "Calculo 2"], status: [0, 1]});
     }
 
-    useEffect(() => {
-      PushNotification.deleteChannel('canalteste1');
-      PushNotification.createChannel({
-          channelId: "canalteste1", // (required)
-          channelName: "teste1", // (required)
-          channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
-          soundName: 'default',
-          importance: 4, // (optional) default: 4. Int value of the Android notification importance
-          vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
-      },
-      //(created) => console.warn(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
-      );
-    }, [])
+    // useEffect(() => {
+    //   PushNotification.deleteChannel('canalteste1');
+    //   PushNotification.createChannel({
+    //       channelId: "canalteste1", // (required)
+    //       channelName: "teste1", // (required)
+    //       channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
+    //       soundName: 'default',
+    //       importance: 4, // (optional) default: 4. Int value of the Android notification importance
+    //       vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+    //   },
+    //   //(created) => console.warn(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+    //   );
+    // }, [])
 
     useEffect(() => {
       const backAction = () => {
@@ -95,11 +95,11 @@ function HomeProfessor({props, navigation}) {
             />
         </View>
 
-        <BlueButton
+        {/* <BlueButton
             text={"Send notification"}
             press={() => showNotification('canalteste1', 'title', 'message')}
             disabled={false}
-        />
+        /> */}
 
         <SafeAreaView style={styles.scrollview}>
           <ScrollView>
