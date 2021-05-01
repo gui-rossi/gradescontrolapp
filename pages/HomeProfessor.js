@@ -5,9 +5,15 @@ import { NavigationAction, useNavigationState } from "@react-navigation/native"
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
+import PushNotification from 'react-native-push-notification';
+import {Platform} from 'react-native';
+
+import { showScheduledNotificationWithoutSound, showScheduledNotificationWithSound, cancelAllNotifications, showNotification } from './../notifications'
+
 import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
+import BlueButton from "../components/BlueButton";
 
 function HomeProfessor({props, navigation}) {
 
@@ -45,6 +51,20 @@ function HomeProfessor({props, navigation}) {
     }
 
     useEffect(() => {
+      PushNotification.deleteChannel('canalteste1');
+      PushNotification.createChannel({
+          channelId: "canalteste1", // (required)
+          channelName: "teste1", // (required)
+          channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
+          soundName: 'default',
+          importance: 4, // (optional) default: 4. Int value of the Android notification importance
+          vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+      },
+      //(created) => console.warn(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+      );
+    }, [])
+
+    useEffect(() => {
       const backAction = () => {
         if (navigation.isFocused())
         {
@@ -75,6 +95,12 @@ function HomeProfessor({props, navigation}) {
             />
         </View>
 
+        <BlueButton
+            text={"Send notification"}
+            press={() => showNotification('canalteste1', 'title', 'message')}
+            disabled={false}
+        />
+
         <SafeAreaView style={styles.scrollview}>
           <ScrollView>
             <TurmaCard
@@ -103,6 +129,7 @@ function HomeProfessor({props, navigation}) {
             modalVisible={modalVisible}
           />
         </View>
+        
         </>
     );
 }
