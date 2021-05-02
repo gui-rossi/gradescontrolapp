@@ -8,6 +8,8 @@ import { ScrollView } from "react-native";
 import PushNotification from 'react-native-push-notification';
 import {Platform} from 'react-native';
 
+import getHomeScreenInfo from "../services/getHomeScreenInfo"
+
 import { showScheduledNotificationWithoutSound, showScheduledNotificationWithSound, cancelAllNotifications, showNotification } from './../notifications'
 
 import MenuButton from "../components/MenuButton";
@@ -15,12 +17,15 @@ import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
 import BlueButton from "../components/BlueButton";
 
-function HomeProfessor({props, navigation}) {
+function HomeProfessor({props, route, navigation}) {
+
+    const { mail } = route.params;
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
 
     const [menu, setMenu] = useState(false);
+    const [infos, setInfos] = useState([]);
 
     function showModal () {
       setModalVisible(!modalVisible);
@@ -43,12 +48,26 @@ function HomeProfessor({props, navigation}) {
 
     function goToMeusDados () {
       showModal();
-      navigation.navigate('MeusDados', {name: "Guilherme Rossi", mail: "guizo.rossi@gmail.com", celular: "(11)1122334455"});
+      navigation.navigate('MeusDados', {name: infos[0].nome_prof, mail: infos[0].mail, celular: infos[0].cel});
     }
 
     function goToTurma () {
       navigation.navigate('Turma', {name: "Turma 1", aulas: ["Queda da bastilha", "Calculo 2"], status: [0, 1]});
     }
+
+    async function getInfos () {
+      await getHomeScreenInfo.getScreenInfoProf(mail)
+        .catch((e) => {
+          throw e;
+        })
+        .then((v) => {
+          setInfos(v.data)
+        });
+    } 
+
+    useEffect(() => {
+      getInfos()
+    }, [])
 
     // useEffect(() => {
     //   PushNotification.deleteChannel('canalteste1');
@@ -127,6 +146,7 @@ function HomeProfessor({props, navigation}) {
             sair={goToLogin}
             setModalVisible={setModalVisible}
             modalVisible={modalVisible}
+            hello={infos[0] ? infos[0].nome_prof : ''}
           />
         </View>
         

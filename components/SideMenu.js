@@ -37,7 +37,7 @@ function SideMenu(props) {
           </View>
         </View>
 
-        <Text style={styles.olaFulano}>Olá, fulano</Text>
+        <Text style={styles.olaFulano}>Olá, {props.hello}</Text>
 
         <View>
           <Text style={styles.minhaConta}>Minha conta</Text>

@@ -5,16 +5,21 @@ import { NavigationAction, useNavigationState } from "@react-navigation/native"
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
+import getHomeScreenInfo from "../services/getHomeScreenInfo"
+
 import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
 
-function HomeAluno({props, navigation}) {
+function HomeAluno({props, route, navigation}) {
+
+    const { mail } = route.params;
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
 
     const [menu, setMenu] = useState(false);
+    const [infos, setInfos] = useState([]);
 
     function showModal () {
       setModalVisible(!modalVisible);
@@ -43,6 +48,20 @@ function HomeAluno({props, navigation}) {
     function goToTurmaViewAluno () {
       navigation.navigate('TurmaAluno', {name: "Turma 1", aulas: ["Queda da bastilha", "Calculo 2"], andamento: [1, 1], status: [0, 1]});
     }
+
+    async function getInfos () {
+      await getHomeScreenInfo.getScreenInfoAluno(mail)
+        .catch((e) => {
+          throw e;
+        })
+        .then((v) => {
+          setInfos(v.data)
+        });
+    } 
+
+    useEffect(() => {
+      getInfos()
+    }, [])
 
     useEffect(() => {
       const backAction = () => {

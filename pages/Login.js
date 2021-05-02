@@ -24,14 +24,14 @@ function Login ({ navigation }) {
             })
             .then((v) => {
                 if (v.data == 1)
-                    navigation.navigate('HomeAluno')
+                    navigation.navigate('HomeAluno', {mail: mail})
                 else if (v.data == 2)
-                    navigation.navigate('HomeProfessor')
+                    navigation.navigate('HomeProfessor', {mail: mail})
             })
     };
 
     function devProf () {
-        navigation.navigate('HomeProfessor');
+        navigation.navigate('HomeProfessor', {mail: "profteste1@gmail.com"});
     }
 
     return (
