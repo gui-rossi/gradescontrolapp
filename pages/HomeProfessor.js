@@ -9,6 +9,7 @@ import PushNotification from 'react-native-push-notification';
 import {Platform} from 'react-native';
 
 import getHomeScreenInfo from "../services/getHomeScreenInfo"
+import createTurma from "../services/createTurma"
 
 import { showScheduledNotificationWithoutSound, showScheduledNotificationWithSound, cancelAllNotifications, showNotification } from './../notifications'
 
@@ -41,9 +42,15 @@ function HomeProfessor({props, route, navigation}) {
       navigation.navigate('ModifyPassword', {mail: infos[0].mail, password: infos[0].password});
     }
 
-    function goToCriarTurma () {
-      //manda registro pra tabela
-      showModal();
+    async function goToCriarTurma () {
+      await createTurma.postTurmaNova(mail)
+        .then((v) => {
+          getInfos();
+          showModal();
+        })
+        .catch((e) => {
+          throw e;
+        })
     }
 
     function goToMeusDados () {
