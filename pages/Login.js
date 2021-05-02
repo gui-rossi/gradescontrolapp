@@ -18,15 +18,15 @@ function Login ({ navigation }) {
 
     async function pressEntrar () {
         await login.loginAlunoOrProf(mail, senha)
-            .catch(e => {
-                setMessage("Usuário ou senha incorretos."); 
-                setModalVisible(!modalVisible);
-            })
             .then((v) => {
                 if (v.data == 1)
                     navigation.navigate('HomeAluno', {mail: mail})
                 else if (v.data == 2)
                     navigation.navigate('HomeProfessor', {mail: mail})
+            })
+            .catch(e => {
+                setMessage("Usuário ou senha incorretos."); 
+                setModalVisible(!modalVisible);
             })
     };
 

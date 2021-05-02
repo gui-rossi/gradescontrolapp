@@ -38,7 +38,7 @@ function HomeProfessor({props, route, navigation}) {
 
     function goToModifyPassword () {
       showModal();
-      navigation.navigate('ModifyPassword');
+      navigation.navigate('ModifyPassword', {mail: infos[0].mail, password: infos[0].password});
     }
 
     function goToCriarTurma () {
@@ -57,12 +57,12 @@ function HomeProfessor({props, route, navigation}) {
 
     async function getInfos () {
       await getHomeScreenInfo.getScreenInfoProf(mail)
+        .then((v) => {
+          setInfos(v.data)
+        })
         .catch((e) => {
           throw e;
         })
-        .then((v) => {
-          setInfos(v.data)
-        });
     } 
 
     useEffect(() => {
@@ -122,18 +122,19 @@ function HomeProfessor({props, route, navigation}) {
 
         <SafeAreaView style={styles.scrollview}>
           <ScrollView>
-            <TurmaCard
-              onPress={goToTurma}
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-            />
-            <TurmaCard 
-              onPress={goToTurma}
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-            />
+            {
+              infos.map((v, i) => {
+                return(
+                <TurmaCard
+                  key={i}
+                  onPress={goToTurma}
+                  numTurma={i + 1}
+                  idTurma={v.id_turma}
+                  numAlunos={v.num_alunos}
+                  numAulas={v.num_aulas}
+              />)
+              })
+            }
           </ScrollView>
         </SafeAreaView>
 
