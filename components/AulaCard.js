@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationAction } from "@react-navigation/native"
@@ -13,6 +13,10 @@ function AulaCard(props) {
     function marcarPresenca() {
         console.warn("marcando presecna")
     }
+
+    useEffect(() => {
+        console.warn(props.status)
+    }, [])
 
     return (
         <View style={styles.padding}>

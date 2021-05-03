@@ -58,8 +58,9 @@ function HomeProfessor({props, route, navigation}) {
       navigation.navigate('MeusDados', {name: infos[0].nome_prof, mail: infos[0].mail, celular: infos[0].cel});
     }
 
-    function goToTurma () {
-      navigation.navigate('Turma', {name: "Turma 1", aulas: ["Queda da bastilha", "Calculo 2"], status: [0, 1]});
+    function goToTurma (id, email, i) {
+      console.warn (i)
+      navigation.navigate('Turma', {id: id, mail: email, index: i});
     }
 
     async function getInfos () {
@@ -134,7 +135,7 @@ function HomeProfessor({props, route, navigation}) {
                 return(
                 <TurmaCard
                   key={i}
-                  onPress={goToTurma}
+                  onPress={() => goToTurma(v.id_turma, v.mail, i+1)}
                   numTurma={i + 1}
                   idTurma={v.id_turma}
                   numAlunos={v.num_alunos}
