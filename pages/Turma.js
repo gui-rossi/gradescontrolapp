@@ -32,7 +32,7 @@ function Turma({route, navigation}) {
     }, [])
 
     function goToAdicionarAluno(){
-        navigation.navigate('AdicionarAluno')
+        navigation.navigate('AdicionarAluno', {id_turma: id, mail: mail})
     }
 
     function inspectAula () {
@@ -40,19 +40,7 @@ function Turma({route, navigation}) {
     }
 
     function goToAdicionarAula(){
-        navigation.navigate('AdicionarAula')
-    }
-
-    function finalizadaInprogressOrScheduled(data, hora){
-        let date = new Date (data.split('/')[2] + "-" + data.split('/')[1] + "-" + data.split('/')[0] + "T" + hora.split(':')[0] + ":" + hora.split(':')[1]);
-        let currentTime = new Date();
-
-        if (date >= currentTime.addHours(2))
-            return "Agendada"
-        else if (date >= currentTime && date <= currentTime.addHours(2))
-            return "Em progresso"
-        else if (date <= currentTime)
-            return "Finalizada"
+        navigation.navigate('AdicionarAula', {id_turma: id, mail: mail})
     }
 
     return (
@@ -76,19 +64,14 @@ function Turma({route, navigation}) {
                                 onPress={inspectAula}
                                 tema={v.tema}
                                 horario={v.data + " - " + v.hora}
-                                status={() => finalizadaInprogressOrScheduled(v.data, v.hora)}
+                                data={v.data}
+                                hora={v.hora}
+                                id={v.id_aula}
+                                updateAulasAfterDeletion={() => getInfos()}
                                 isProf={true}
                         />)
                         })
                     }
-
-                    {/* <AulaCard
-                        onPress={inspectAula}
-                        tema={"Queda da Bastilha"}
-                        horario={"02/10/1994 - 08:00am"}
-                        status={"Finalizada"}
-                        isProf={true}
-                    /> */}
                 
                 </ScrollView>
             </SafeAreaView>

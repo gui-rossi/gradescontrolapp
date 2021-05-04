@@ -1,21 +1,48 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationAction } from "@react-navigation/native"
 import TextLink from './TextLink';
 
+import deleteAula from './../services/deleteAula'
+
 function AulaCard(props) {
 
-    function cancelarAula() {
-        console.warn("cancelando aula")
+    const [estado, setEstado] = useState('');
+
+    async function cancelarAula() {
+        await deleteAula.deleteAula(props.id)
+        .then((v) => {
+            props.updateAulasAfterDeletion;
+            //JOGAR O USUARIO PARA TELA DE HOME SCREEN E FAZER RELOAD pelo endpoint OU PASSAR ESSA FUNCAO PARA FORA para tela de turma
+        })
+        .catch((e) => {
+            throw e;
+        })
     }
 
     function marcarPresenca() {
         console.warn("marcando presecna")
     }
 
+    function finalizadaInprogressOrScheduled(){
+        let currentTime = new Date();
+        currentTime = new Date(currentTime.setHours(currentTime.getHours() - 3));
+        let currentTimeAux = new Date(currentTime);
+        let currentTimePlus2 = new Date(currentTimeAux.setHours(currentTimeAux.getHours() + 2));
+        let dateAula = new Date (props.data.split('/')[2] + "-" + props.data.split('/')[1] + "-" + props.data.split('/')[0] + "T" + props.hora.split(':')[0] + ":" + props.hora.split(':')[1]);
+        let dateTest = new Date('2021-06-03T21:00');
+
+        if (dateAula >= currentTimePlus2)
+            setEstado("Agendada")
+        else if (dateAula >= currentTime && date <= currentTimePlus2)
+            setEstado("Em progresso")
+        else if (dateAula <= currentTime)
+            setEstado("Finalizada")
+    }
+
     useEffect(() => {
-        console.warn(props.status)
+        finalizadaInprogressOrScheduled();
     }, [])
 
     return (
@@ -34,7 +61,7 @@ function AulaCard(props) {
                 
                 <View style={styles.row}>
                     <Text style={styles.subFont}>Status da aula: </Text>
-                    <Text style={styles.subSubFont}>{props.status}</Text>
+                    <Text style={styles.subSubFont}>{estado}</Text>
                 </View>
 
                 {
@@ -58,7 +85,7 @@ function AulaCard(props) {
             }
 
             {
-                props.isProf &&
+                props.isProf && estado == "Agendada" &&
                 <View style={styles.link}>
                     <TextLink 
                         text={"Cancelar aula"}

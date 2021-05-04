@@ -59,7 +59,6 @@ function HomeProfessor({props, route, navigation}) {
     }
 
     function goToTurma (id, email, i) {
-      console.warn (i)
       navigation.navigate('Turma', {id: id, mail: email, index: i});
     }
 

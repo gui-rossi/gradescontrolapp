@@ -5,27 +5,31 @@ import InputField from '../components/InputField';
 import GenericModal from '../components/GenericModal';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
-import recoverPassword from "../services/recoverPassword"
+import addAlunoToTurma from "../services/addAlunoToTurma"
 
 import { Formik } from 'formik'
 import * as yup from 'yup'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import GoBack from '../components/GoBack';
 
-function AdicionarAluno({ props, navigation }) {
+function AdicionarAluno({ props, route, navigation }) {
+
+    const { id_turma, mail } = route.params
+
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("Aluno inexistente.");
 
     async function inserirAlunoNaTurma (values){
-        // await recoverPassword.getPassword(values.email)
-        //     .catch(e => {
-        //         setMessage("Aluno inexistente."); 
-        //         setModalVisible(!modalVisible);
-        //     })
-        //     .then((v) => {
-        //         setMessage("Aluno adicionado a turma.");
-        //         setModalVisible(!modalVisible);
-        //     });
+        //FAZER SP E LOGIC APP PARA ADICIONAR ALUNO NA TURMA
+        await addAlunoToTurma.postNewAluno(values.email)
+            .then((v) => {
+                setMessage("Aluno adicionado a turma.");
+                setModalVisible(!modalVisible);
+            })
+            .catch(e => {
+                setMessage("Aluno inexistente."); 
+                setModalVisible(!modalVisible);
+            })
     };
 
     useEffect(() => {
