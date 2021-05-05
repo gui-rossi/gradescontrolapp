@@ -14,26 +14,30 @@ import GoBack from '../components/GoBack';
 
 function AdicionarAluno({ props, route, navigation }) {
 
-    const { id_turma, mail } = route.params
+    const { id_turma } = route.params
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("Aluno inexistente.");
 
     async function inserirAlunoNaTurma (values){
-        //FAZER SP E LOGIC APP PARA ADICIONAR ALUNO NA TURMA
         await addAlunoToTurma.postNewAluno(values.email)
             .then((v) => {
                 setMessage("Aluno adicionado a turma.");
                 setModalVisible(!modalVisible);
             })
             .catch(e => {
-                setMessage("Aluno inexistente."); 
+                if (e.data == 0)
+                    setMessage("Aluno inexistente."); 
+                else if (e.data == -1)
+                    setMessage("Aluno já está na turma."); 
+
                 setModalVisible(!modalVisible);
             })
     };
 
     useEffect(() => {
         if (modalVisible == false && message == "Aluno adicionado a turma."){
+            //RESOLVER PROBLEMA DE NAO RE-RENDERIZAR NOVAS INFOS QUANDO FAÇO ATUALIZACAO NO DB
             navigation.goBack();
         }
     }, [modalVisible])

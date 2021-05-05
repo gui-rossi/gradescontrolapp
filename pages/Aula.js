@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationAction } from "@react-navigation/native"
@@ -10,13 +10,30 @@ import AulaCard from '../components/AulaCard';
 import GoBack from '../components/GoBack';
 import AlunoCard from '../components/AlunoCard';
 
+import infosAlunosAula from './../services/infosAlunosAula'
+
 function Aula({route, navigation}) {
 
-    const { tema, dia, hora } = route.params;
+    const { id_aula, tema } = route.params;
+    const [infos, setInfos] = useState([]);
 
     function removerFalta () {
         console.warn("falta removida")
     }
+
+    async function getInfos(){
+        await infosAlunosAula.getStatusPresencaAlunos(2)
+        .then((v) => {
+            setInfos(v.data)
+        })
+        .catch((e) => {
+          throw e;
+        })
+    }
+
+    useEffect(() => {
+        getInfos();
+    }, [])
 
     return (
         <>
@@ -27,23 +44,25 @@ function Aula({route, navigation}) {
 
             <View style={styles.subtitle}>
                 <Text style={styles.font}>
-                    Data: {dia} - {hora} 
+                    Data: {infos[0] ? infos[0].data : ''} - { infos[0] ? infos[0].hora : ''} 
                 </Text>
             </View>
 
             <SafeAreaView style={styles.scrollview}>
                 <ScrollView>
-                    <AlunoCard
-                        onPress={removerFalta}
-                        aluno={"Chastinbam"}
-                        data={"02/10/1994 - 08:00am"}
-                        status={"Ausente"}
-                    />
-                    <AlunoCard
-                        aluno={"Guilherme"}
-                        data={"02/10/1994 - 08:00am"}
-                        status={"Presente"}
-                    />
+
+                    {
+                        infos.map((v, i) => {
+                            return(
+                            <AlunoCard
+                                key={i}
+                                onPress={removerFalta ? !v.presente : null}
+                                aluno={v.nomeAluno}
+                                data={v.data + " - " + v.hora}
+                                status={v.presente ? "Presente" : "Ausente"}
+                        />)
+                        })
+                    }
                 
                 </ScrollView>
             </SafeAreaView>

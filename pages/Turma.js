@@ -32,11 +32,11 @@ function Turma({route, navigation}) {
     }, [])
 
     function goToAdicionarAluno(){
-        navigation.navigate('AdicionarAluno', {id_turma: id, mail: mail})
+        navigation.navigate('AdicionarAluno', {id_turma: id})
     }
 
-    function inspectAula () {
-        navigation.navigate('Aula', {tema: "Queda da Bastilha", dia: "02/10/1994", hora: "08:00"});
+    function inspectAula (id_aula, tema) {
+        navigation.navigate('Aula', {id_aula: id_aula, tema: tema});
     }
 
     function goToAdicionarAula(){
@@ -61,7 +61,7 @@ function Turma({route, navigation}) {
                             return(
                             <AulaCard
                                 key={i}
-                                onPress={inspectAula}
+                                onPress={() => inspectAula(v.id_aula, v.tema)}
                                 tema={v.tema}
                                 horario={v.data + " - " + v.hora}
                                 data={v.data}
