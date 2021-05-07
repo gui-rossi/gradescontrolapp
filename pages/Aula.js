@@ -9,16 +9,31 @@ import BlueButton from '../components/BlueButton';
 import AulaCard from '../components/AulaCard';
 import GoBack from '../components/GoBack';
 import AlunoCard from '../components/AlunoCard';
+import GenericModal from '../components/GenericModal';
 
 import infosAlunosAula from './../services/infosAlunosAula'
+import removeFalta from './../services/removeFalta'
+
 
 function Aula({route, navigation}) {
 
     const { id_aula, tema } = route.params;
     const [infos, setInfos] = useState([]);
 
-    function removerFalta () {
-        console.warn("falta removida")
+    const [modalVisible, setModalVisible] = useState(false);
+    const [message, setMessage] = useState("");
+    
+    async function removerFalta (mail_aluno) {
+        await removeFalta.postRemocaoFalta(id_aula, mail_aluno)
+        .then((v) => {
+            setMessage("Falta removida.");
+            setModalVisible(!modalVisible);
+            infos.map((v, i) => { if (v.mail == mail_aluno) v.presente = true; return v })
+        })
+        .catch((e) => {
+            setMessage("Aconteceu um erro.");
+            setModalVisible(!modalVisible);
+        })
     }
 
     async function getInfos(){
@@ -56,8 +71,9 @@ function Aula({route, navigation}) {
                             return(
                             <AlunoCard
                                 key={i}
-                                onPress={removerFalta ? !v.presente : null}
+                                onPress={() => removerFalta(v.mail) ? !v.presente : ''}
                                 aluno={v.nomeAluno}
+                                id_aluno={v.mail}
                                 data={v.data + " - " + v.hora}
                                 status={v.presente ? "Presente" : "Ausente"}
                         />)
@@ -66,6 +82,11 @@ function Aula({route, navigation}) {
                 
                 </ScrollView>
             </SafeAreaView>
+            <GenericModal 
+                message={message}
+                setModalVisible={setModalVisible}
+                modalVisible={modalVisible}
+            />
         </>
     );
 }

@@ -14,15 +14,15 @@ function AlunoCard(props) {
             
             <View style={styles.row}>
                 <Text style={styles.subFont}>Status de presença: </Text>
-                <Text style={props.onPress ? styles.subSubFontAusente : styles.subSubFontPresente}>{props.status}</Text>
+                <Text style={props.status == "Ausente" ? styles.subSubFontAusente : styles.subSubFontPresente}>{props.status}</Text>
             </View>
 
             {
-                props.onPress &&
+                props.status == "Ausente" &&
                 <View style={styles.link}>
                     <TextLink 
                         text={"Remover falta"}
-                        function={() => props.onPress()}
+                        function={(id) => props.onPress(id)}
                     />
                 </View>
             }
