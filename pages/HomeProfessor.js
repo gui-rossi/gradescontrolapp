@@ -24,6 +24,7 @@ function HomeProfessor({props, route, navigation}) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
+    const [pic, setPic] = useState ('');
 
     const [menu, setMenu] = useState(false);
     const [infos, setInfos] = useState([]);
@@ -155,6 +156,9 @@ function HomeProfessor({props, route, navigation}) {
             setModalVisible={setModalVisible}
             modalVisible={modalVisible}
             hello={infos[0] ? infos[0].nome_prof : ''}
+            mail={infos[0] ? infos[0].mail : ''}
+            pic={pic}
+            set_pic={setPic}
           />
         </View>
         

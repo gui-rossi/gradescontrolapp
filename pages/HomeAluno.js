@@ -17,6 +17,7 @@ function HomeAluno({props, route, navigation}) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
+    const [foto, setFoto] = useState (null);
 
     const [menu, setMenu] = useState(false);
     const [infos, setInfos] = useState([]);
@@ -53,6 +54,7 @@ function HomeAluno({props, route, navigation}) {
       await getHomeScreenInfo.getScreenInfoAluno(mail)
         .then((v) => {
           setInfos(v.data)
+          setFoto(v.data[0].picture_url)
         })
         .catch((e) => {
           throw e;
@@ -114,7 +116,9 @@ function HomeAluno({props, route, navigation}) {
           </ScrollView>
         </SafeAreaView>
 
+        
         <View style={modalVisible ? styles.pageWithMenu : styles.page}>
+         
           <SideMenu
             meusDados={goToMeusDados}
             gerenciarNotificacoes={goToGerenciarNotificacoes}
@@ -124,8 +128,13 @@ function HomeAluno({props, route, navigation}) {
             setModalVisible={setModalVisible}
             modalVisible={modalVisible}
             hello={infos[0] ? infos[0].nome_aluno : ''}
+            mail={infos[0] ? infos[0].mail_aluno : ''}
+            foto={foto ? foto : null}
+            set_foto={setFoto}
           />
+          
         </View>
+        
         </>
     );
 }

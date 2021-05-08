@@ -5,7 +5,6 @@ import { NavigationAction } from "@react-navigation/native"
 import TextLink from './TextLink';
 
 import deleteAula from './../services/deleteAula'
-import marcarPresenca from './../services/marcarPresenca'
 import removeFalta from './../services/removeFalta'
 
 function AulaCard(props) {
