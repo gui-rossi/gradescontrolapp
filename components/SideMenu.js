@@ -4,7 +4,7 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
-import FileViewer from 'react-native-file-viewer';
+
 import DocumentPicker from "react-native-document-picker";
 
 import Picture from "../components/Picture";
@@ -17,10 +17,10 @@ function SideMenu(props) {
   async function clickTrocarFoto () {
     try {
       const res = await DocumentPicker.pick({
-        type: [DocumentPicker.types.allFiles],
-      });
+        type: [DocumentPicker.types.images],
+      }).catch((e) => { throw e })
       setPic(res.fileCopyUri)
-      //console.warn(res)
+      console.warn(res)
     }
     catch(e) {
       throw e;
