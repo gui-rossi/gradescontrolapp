@@ -4,11 +4,25 @@ import { TouchableWithoutFeedback } from 'react-native';
 import { TouchableOpacity } from 'react-native';
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+import FileViewer from 'react-native-file-viewer';
+import DocumentPicker from "react-native-document-picker";
 
 import Picture from "../components/Picture";
 import TextLink from './TextLink';
 
 function SideMenu(props) {
+
+  async function clickTrocarFoto () {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.allFiles],
+      });
+      await FileViewer.open(res.uri);
+    }
+    catch(e) {
+      throw e;
+    }
+  }
 
   return (
 
@@ -32,7 +46,7 @@ function SideMenu(props) {
           <View style={styles.textoFoto}>
             <TextLink
               text={"Trocar de foto"}
-              //function={}
+              function={() => clickTrocarFoto()}
             />
           </View>
         </View>

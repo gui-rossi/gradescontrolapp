@@ -111,20 +111,6 @@ function HomeAluno({props, route, navigation}) {
               })
             }
 
-            {/* <TurmaCard
-              onPress={() => goToTurmaViewAluno(v.id_turma, v.mail, i+1)}
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-              nomeProf={"Natalia"}
-            />
-            <TurmaCard
-              onPress={goToTurmaViewAluno}
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-              nomeProf={"Jakubiak"}
-            /> */}
           </ScrollView>
         </SafeAreaView>
 
@@ -137,6 +123,7 @@ function HomeAluno({props, route, navigation}) {
             sair={goToLogin}
             setModalVisible={setModalVisible}
             modalVisible={modalVisible}
+            hello={infos[0] ? infos[0].nome_aluno : ''}
           />
         </View>
         </>
