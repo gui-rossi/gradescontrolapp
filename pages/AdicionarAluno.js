@@ -20,7 +20,7 @@ function AdicionarAluno({ props, route, navigation }) {
     const [message, setMessage] = useState("Aluno inexistente.");
 
     async function inserirAlunoNaTurma (values){
-        await addAlunoToTurma.postNewAluno(values.email)
+        await addAlunoToTurma.postNewAluno(id_turma, values.email)
             .then((v) => {
                 setMessage("Aluno adicionado a turma.");
                 setModalVisible(!modalVisible);

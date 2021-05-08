@@ -31,7 +31,7 @@ function Login ({ navigation }) {
     };
 
     function devProf () {
-        navigation.navigate('HomeProfessor', {mail: "profteste1@gmail.com"});
+        navigation.navigate('HomeAluno', {mail: "aluno3@utfpr.alunos.edu.br"});
     }
 
     return (
