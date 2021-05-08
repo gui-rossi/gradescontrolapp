@@ -10,6 +10,8 @@ target 'rn' do
 
   pod 'RNGestureHandler', :path => '../node_modules/react-native-gesture-handler'
 
+  pod 'react-native-onesignal', :path => '../node_modules/react-native-onesignal'
+
   target 'rnTests' do
     inherit! :complete
     # Pods for testing

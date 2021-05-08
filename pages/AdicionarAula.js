@@ -5,7 +5,7 @@ import InputField from '../components/InputField';
 import GenericModal from '../components/GenericModal';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 
-import recoverPassword from "../services/recoverPassword"
+import createAula from "../services/createAula"
 
 import { Formik } from 'formik'
 import * as yup from 'yup'
@@ -13,24 +13,28 @@ import * as yup from 'yup'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import GoBack from '../components/GoBack';
 
-function AdicionarAula({ props, navigation }) {
+function AdicionarAula({ props, route, navigation }) {
+
+    const { id_turma, mail } = route.params;
+
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("Aluno inexistente.");
 
     async function inserirAulaNaTurma (values){
-        // await recoverPassword.getPassword(values.email)
-        //     .catch(e => {
-        //         setMessage("AConteceu um erro."); 
-        //         setModalVisible(!modalVisible);
-        //     })
-        //     .then((v) => {
-        //         setMessage("Aula adicionado a turma.");
-        //         setModalVisible(!modalVisible);
-        //     });
+        await createAula.postAulaNova(id_turma, mail, values.tema, values.dia, values.hora)
+            .then((v) => {
+                setMessage("Aula adicionada a turma.");
+                setModalVisible(!modalVisible);
+            })
+            .catch(e => {
+                setMessage("Aconteceu um erro."); 
+                setModalVisible(!modalVisible);
+            })
     };
 
     useEffect(() => {
-        if (modalVisible == false && message == "Aula adicionado a turma."){
+        if (modalVisible == false && message == "Aula adicionada a turma."){
+            //arranjar um jeito de fazer reload das infos da pagina...
             navigation.goBack();
         }
     }, [modalVisible])

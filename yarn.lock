@@ -1151,6 +1151,13 @@
   "resolved" "https://registry.npmjs.org/@react-native-community/masked-view/-/masked-view-0.1.10.tgz"
   "version" "0.1.10"
 
+"@react-native-community/push-notification-ios@^1.8.0":
+  "integrity" "sha512-vxvkeampafjmtDoQBN8Q4azP21l6cMX93+OQZemyIWZmG++OjCVDQVitobf/kWLm5zyGwdylejbpMGo75qo7rA=="
+  "resolved" "https://registry.npmjs.org/@react-native-community/push-notification-ios/-/push-notification-ios-1.8.0.tgz"
+  "version" "1.8.0"
+  dependencies:
+    "invariant" "^2.2.4"
+
 "@react-native-picker/picker@^1.9.7":
   "integrity" "sha512-LxtFcuQ/jxsNwH9byM4mMSusqGfaj0LHXTh6fJgvIKOBjAWwV+FjWHszQSPCbnycdezirf8dFLhF9phcNuE8CA=="
   "resolved" "https://registry.npmjs.org/@react-native-picker/picker/-/picker-1.12.0.tgz"
@@ -3946,7 +3953,7 @@
     "has" "^1.0.3"
     "side-channel" "^1.0.2"
 
-"invariant@*", "invariant@^2.2.4":
+"invariant@*", "invariant@^2.2.2", "invariant@^2.2.4":
   "integrity" "sha512-phJfQVBuaJM5raOpJjSfkiD6BpbCE4Ns//LaXl6wGYtUBY83nWS6Rf9tXm2e8VaK60JEjYldbPif/A2B1C2gNA=="
   "resolved" "https://registry.npmjs.org/invariant/-/invariant-2.2.4.tgz"
   "version" "2.2.4"
@@ -6444,6 +6451,18 @@
   "resolved" "https://registry.npmjs.org/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.2.1.tgz"
   "version" "1.2.1"
 
+"react-native-onesignal@^4.0.8":
+  "integrity" "sha512-N80+WopFz/ztclF+a0RpSGEu+hArlWLOKSSLv/YvYvIttcXUSIr9CpRj9a4Zq6Sc75ns97HHJZ28xXGY88JFTg=="
+  "resolved" "https://registry.npmjs.org/react-native-onesignal/-/react-native-onesignal-4.0.8.tgz"
+  "version" "4.0.8"
+  dependencies:
+    "invariant" "^2.2.2"
+
+"react-native-push-notification@^7.2.3":
+  "integrity" "sha512-MWwzGXGD22vQ35roDWBQ4EJl1jS4kuuAAdxqe2C88gULgzT6rQkR9wszl5b5K+hIWqve50qg4zJoSgarr//2KA=="
+  "resolved" "https://registry.npmjs.org/react-native-push-notification/-/react-native-push-notification-7.2.3.tgz"
+  "version" "7.2.3"
+
 "react-native-ratings@^7.2.0":
   "integrity" "sha512-oSrkQ4rnpYjCw+d6MPJQghXfrfb3uQKoTJx1exdk7xqzw4jnv3pyu0PAuxCDJk/rfDSD/sirIAudz+zdGxrBog=="
   "resolved" "https://registry.npmjs.org/react-native-ratings/-/react-native-ratings-7.2.0.tgz"
@@ -6495,7 +6514,7 @@
     "prop-types" "^15.7.2"
     "yargs" "^15.0.2"
 
-"react-native@*", "react-native@>=0.38.0", "react-native@>=0.43.0", "react-native@>=0.56.0", "react-native@>=0.57", "react-native@>=0.60", "react-native@>=0.63.0", "react-native@0.63.2":
+"react-native@*", "react-native@>=0.33", "react-native@>=0.38.0", "react-native@>=0.43.0", "react-native@>=0.56.0", "react-native@>=0.57", "react-native@>=0.58.4", "react-native@>=0.60", "react-native@>=0.63.0", "react-native@0.63.2":
   "integrity" "sha512-MkxHeJorUDzmQwKJrTfrFYMDRLyu9GSBpsFFMDX7X+HglVnaZi3CTzW2mRv1eIcazoseBOP2eJe+bnkyLl8Y2A=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.63.2.tgz"
   "version" "0.63.2"
@@ -6559,7 +6578,7 @@
     "raf" "^3.1.0"
     "tween-functions" "^1.0.1"
 
-"react@*", "react@>=16.0.0-alpha.3", "react@>=16.4.1", "react@>=16.8.0", "react@>=16.8.3", "react@16 || 17", "react@16.13.1":
+"react@*", "react@>=16.0.0-alpha.3", "react@>=16.4.1", "react@>=16.6.3", "react@>=16.8.0", "react@>=16.8.3", "react@16 || 17", "react@16.13.1":
   "integrity" "sha512-YMZQQq32xHLX0bz5Mnibv1/LHb3Sqzngu7xstSM+vrkE5Kzr9xE0yMByK5kMoTK30YVJE61WfbxIFFvfeDKT1w=="
   "resolved" "https://registry.npmjs.org/react/-/react-16.13.1.tgz"
   "version" "16.13.1"

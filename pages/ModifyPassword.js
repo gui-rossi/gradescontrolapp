@@ -6,25 +6,27 @@ import GenericModal from '../components/GenericModal';
 import { BaseNavigationContainer } from '@react-navigation/native';
 import GoBack from '../components/GoBack';
 
-import recoverPassword from "../services/recoverPassword";
+import changePassword from "../services/changePassword";
 
 import { Formik } from 'formik'
 import * as yup from 'yup'
 
-function ModifyPassword({ props, navigation }) {
+function ModifyPassword({ props, route, navigation }) {
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("Dados inválidos.");
 
+    const { mail } = route.params;
+
     async function modificarSenha (values){
-        // await recoverPassword.getPassword(values.email)
-        //     .catch(e => {
-        //         setMessage("Senha Velha incorreta."); 
-        //         setModalVisible(!modalVisible);
-        //     })
-        //     .then((v) => {
-        //         setMessage("Senha redefinida.");
-        //         setModalVisible(!modalVisible);
-        //     });
+        await changePassword.postNewPassword(mail, values.senha, values.novaSenha)
+            .then((v) => {
+                setMessage("Senha redefinida.");
+                setModalVisible(!modalVisible);
+            })
+            .catch((e) => {
+                setMessage("Senha Velha incorreta."); 
+                setModalVisible(!modalVisible);
+            })
     };
 
     useEffect(() => {
@@ -68,6 +70,7 @@ function ModifyPassword({ props, navigation }) {
                     onChangeText={handleChange('senha')}
                     onBlur={handleBlur('senha')}
                     value={values.senha}
+                    secureTextEntry
                 />
                 {(errors.senha && touched.senha) &&
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.senha}</Text>
@@ -81,6 +84,7 @@ function ModifyPassword({ props, navigation }) {
                     onChangeText={handleChange('novaSenha')}
                     onBlur={handleBlur('novaSenha')}
                     value={values.novaSenha}
+                    secureTextEntry
                 />
                 {(errors.novaSenha && touched.novaSenha) &&
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.novaSenha}</Text>
@@ -89,11 +93,12 @@ function ModifyPassword({ props, navigation }) {
                 <TextInput
                     style={styles.input}
                     underlineColorAndroid={"black"}
-                    name="confirmacaoNovaSenha*"
-                    placeholder="Confirmação da Senha Nova"
+                    name="confirmacaoNovaSenha"
+                    placeholder="Confirmação da Senha Nova*"
                     onChangeText={handleChange('confirmacaoNovaSenha')}
                     onBlur={handleBlur('confirmacaoNovaSenha')}
                     value={values.confirmacaoNovaSenha}
+                    secureTextEntry
                 />
                 {(errors.confirmacaoNovaSenha && touched.confirmacaoNovaSenha) &&
                     <Text style={{ fontSize: 10, color: 'red' }}>{errors.confirmacaoNovaSenha}</Text>
@@ -122,11 +127,18 @@ function ModifyPassword({ props, navigation }) {
 }
 
 const modifySenhaValidation = yup.object().shape({
-    email: yup
+    senha: yup
         .string()
-        .email("Por favor insira um email válido.")
-        .required('Email é obrigatório.')
-  })
+        .min(8, ({ min }) => `Senhas precisam ter pelo menos ${min} caracteres.`)
+        .required('Senha antiga é obrigatório.'),
+    novaSenha: yup
+        .string()
+        .min(8, ({ min }) => `Senhas precisam ter pelo menos ${min} caracteres.`)
+        .required('Senha nova é obrigatório.'),
+    confirmacaoNovaSenha: yup
+        .string()
+        .oneOf([yup.ref('novaSenha'), null], 'Senhas precisam ser iguais.')
+})
 
 const styles = StyleSheet.create({
     page: {

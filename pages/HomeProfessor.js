@@ -5,16 +5,28 @@ import { NavigationAction, useNavigationState } from "@react-navigation/native"
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
+import PushNotification from 'react-native-push-notification';
+import {Platform} from 'react-native';
+
+import getHomeScreenInfo from "../services/getHomeScreenInfo"
+import createTurma from "../services/createTurma"
+
+import { showScheduledNotificationWithoutSound, showScheduledNotificationWithSound, cancelAllNotifications, showNotification } from './../notifications'
+
 import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
+import BlueButton from "../components/BlueButton";
 
-function HomeProfessor({props, navigation}) {
+function HomeProfessor({props, route, navigation}) {
+
+    const { mail } = route.params;
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
 
     const [menu, setMenu] = useState(false);
+    const [infos, setInfos] = useState([]);
 
     function showModal () {
       setModalVisible(!modalVisible);
@@ -27,22 +39,56 @@ function HomeProfessor({props, navigation}) {
 
     function goToModifyPassword () {
       showModal();
-      navigation.navigate('ModifyPassword');
+      navigation.navigate('ModifyPassword', {mail: infos[0].mail, password: infos[0].password});
     }
 
-    function goToCriarTurma () {
-      //manda registro pra tabela
-      showModal();
+    async function goToCriarTurma () {
+      await createTurma.postTurmaNova(mail)
+        .then((v) => {
+          getInfos();
+          showModal();
+        })
+        .catch((e) => {
+          throw e;
+        })
     }
 
     function goToMeusDados () {
       showModal();
-      navigation.navigate('MeusDados', {name: "Guilherme Rossi", mail: "guizo.rossi@gmail.com", celular: "(11)1122334455"});
+      navigation.navigate('MeusDados', {name: infos[0].nome_prof, mail: infos[0].mail, celular: infos[0].cel});
     }
 
-    function goToTurma () {
-      navigation.navigate('Turma', {name: "Turma 1", aulas: ["Queda da bastilha", "Calculo 2"], status: [0, 1]});
+    function goToTurma (id, email, i) {
+      navigation.navigate('Turma', {id: id, mail: email, index: i});
     }
+
+    async function getInfos () {
+      await getHomeScreenInfo.getScreenInfoProf(mail)
+        .then((v) => {
+          setInfos(v.data)
+        })
+        .catch((e) => {
+          throw e;
+        })
+    } 
+
+    useEffect(() => {
+      getInfos()
+    }, [])
+
+    // useEffect(() => {
+    //   PushNotification.deleteChannel('canalteste1');
+    //   PushNotification.createChannel({
+    //       channelId: "canalteste1", // (required)
+    //       channelName: "teste1", // (required)
+    //       channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
+    //       soundName: 'default',
+    //       importance: 4, // (optional) default: 4. Int value of the Android notification importance
+    //       vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+    //   },
+    //   //(created) => console.warn(`createChannel returned '${created}'`) // (optional) callback returns whether the channel was created, false means it already existed.
+    //   );
+    // }, [])
 
     useEffect(() => {
       const backAction = () => {
@@ -75,20 +121,27 @@ function HomeProfessor({props, navigation}) {
             />
         </View>
 
+        {/* <BlueButton
+            text={"Send notification"}
+            press={() => showNotification('canalteste1', 'title', 'message')}
+            disabled={false}
+        /> */}
+
         <SafeAreaView style={styles.scrollview}>
           <ScrollView>
-            <TurmaCard
-              onPress={goToTurma}
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-            />
-            <TurmaCard 
-              onPress={goToTurma}
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-            />
+            {
+              infos.map((v, i) => {
+                return(
+                <TurmaCard
+                  key={i}
+                  onPress={() => goToTurma(v.id_turma, v.mail, i+1)}
+                  numTurma={i + 1}
+                  idTurma={v.id_turma}
+                  numAlunos={v.num_alunos}
+                  numAulas={v.num_aulas}
+              />)
+              })
+            }
           </ScrollView>
         </SafeAreaView>
 
@@ -101,8 +154,10 @@ function HomeProfessor({props, navigation}) {
             sair={goToLogin}
             setModalVisible={setModalVisible}
             modalVisible={modalVisible}
+            hello={infos[0] ? infos[0].nome_prof : ''}
           />
         </View>
+        
         </>
     );
 }

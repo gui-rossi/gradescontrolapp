@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationAction } from "@react-navigation/native"
@@ -10,37 +10,53 @@ import AulaCard from '../components/AulaCard';
 import GoBack from '../components/GoBack';
 import AddAulaCard from '../components/AddAulaCard';
 
+import getAulas from './../services/getAulas'
+
 function TurmaAluno({route, navigation}) {
 
-    const { name, aulas, andamento, status } = route.params;
+    const { id_turma, mail_aluno, index } = route.params;
+    const [infos, setInfos] = useState([]);
 
-    function goToAdicionarAluno(){
-        navigation.navigate('AdicionarAluno')
+    async function getInfos() {
+        await getAulas.getAulasAluno(id_turma, mail_aluno)
+        .then((v) => {
+            setInfos(v.data)
+        })
+        .catch((e) => {
+          throw e;
+        })
     }
+
+    useEffect(() => {
+        getInfos();
+    }, [])
 
     return (
         <>
             <GoBack
-                name={name}
+                name={"Turma " + index}
                 navigation={navigation}
             />
 
             <SafeAreaView style={styles.scrollview}>
                 <ScrollView>
-                    <AulaCard
-                        tema={"Queda da Bastilha"}
-                        horario={"02/10/1994 - 08:00am"}
-                        status={"Em andamento"}
-                        presenca={"Presente"}
-                        isEmAndamento={true}
-                    />
-                    <AulaCard
-                        tema={"Cálculo diferencial e integral II"}
-                        horario={"04/10/1994 - 08:00am"}
-                        status={"Finalizada"}
-                        presenca={"Presente"}
-                        isEmAndamento={false}
-                    />
+
+                    {
+                        infos.map((v, i) => {
+                            return(
+                            <AulaCard
+                                key={i}
+                                tema={v.tema}
+                                horario={v.data + " - " + v.hora}
+                                data={v.data}
+                                hora={v.hora}
+                                id={v.id_aula}
+                                email_aluno={mail_aluno}
+                                isAluno={true}
+                                presenca={v.presente}
+                        />)
+                        })
+                    }
                 
                 </ScrollView>
             </SafeAreaView>

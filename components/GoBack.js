@@ -10,7 +10,8 @@ function GoBack(props) {
                 style={styles.navbar}   
                 onPress={() => props.navigation.goBack()}
             >
-                <Icon name="arrow-left" size={25} color="#ffffff"/>
+                {/* <Icon name="arrow-left" size={25} color="#ffffff"/> */}
+                <Text style={{fontSize: 25, color: "#ffffff"}}>❮</Text>
                 <Text style={styles.goback}>{props.name}</Text>
             </TouchableOpacity>
         </View>

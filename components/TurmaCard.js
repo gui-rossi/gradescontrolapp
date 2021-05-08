@@ -24,7 +24,7 @@ function TurmaCard(props) {
                     <Text style={styles.subFont}>Número de aulas: </Text>
                     <Text style={styles.subSubFont}>{props.numAulas}</Text>
                 </View>
-
+                
                 {
                     props.nomeProf &&
                     <View style={styles.row}>

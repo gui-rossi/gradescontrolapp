@@ -18,20 +18,20 @@ function Login ({ navigation }) {
 
     async function pressEntrar () {
         await login.loginAlunoOrProf(mail, senha)
+            .then((v) => {
+                if (v.data == 1)
+                    navigation.navigate('HomeAluno', {mail: mail})
+                else if (v.data == 2)
+                    navigation.navigate('HomeProfessor', {mail: mail})
+            })
             .catch(e => {
                 setMessage("Usuário ou senha incorretos."); 
                 setModalVisible(!modalVisible);
             })
-            .then((v) => {
-                if (v.data == 1)
-                    navigation.navigate('HomeAluno')
-                else if (v.data == 2)
-                    navigation.navigate('HomeProfessor')
-            })
     };
 
     function devProf () {
-        navigation.navigate('HomeProfessor');
+        navigation.navigate('HomeAluno', {mail: "aluno3@utfpr.alunos.edu.br"});
     }
 
     return (

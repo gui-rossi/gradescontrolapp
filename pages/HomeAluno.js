@@ -5,16 +5,21 @@ import { NavigationAction, useNavigationState } from "@react-navigation/native"
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
+import getHomeScreenInfo from "../services/getHomeScreenInfo"
+
 import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
 
-function HomeAluno({props, navigation}) {
+function HomeAluno({props, route, navigation}) {
+
+    const { mail } = route.params;
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
 
     const [menu, setMenu] = useState(false);
+    const [infos, setInfos] = useState([]);
 
     function showModal () {
       setModalVisible(!modalVisible);
@@ -27,22 +32,36 @@ function HomeAluno({props, navigation}) {
 
     function goToModifyPassword () {
       showModal();
-      navigation.navigate('ModifyPassword');
+      navigation.navigate('ModifyPassword', {mail: infos[0].mail_aluno});
     }
 
     function goToGerenciarNotificacoes () {
       showModal();
-      navigation.navigate('GerenciarNotificacoes', {somBefore: true, notificacaoBefore: true});
+      navigation.navigate('GerenciarNotificacoes', {somBefore: infos[0].SomNotificacao, notificacaoBefore: infos[0].NotificacaoAviso});
     }
 
     function goToMeusDados () {
       showModal();
-      navigation.navigate('MeusDados', {name: "Guilherme Rossi", mail: "guizo.rossi@gmail.com", celular: "(11)11223344"});
+      navigation.navigate('MeusDados', {name: infos[0].nome_aluno, mail: infos[0].mail_aluno, celular: infos[0].cel});
     }
 
-    function goToTurmaViewAluno () {
-      navigation.navigate('TurmaAluno', {name: "Turma 1", aulas: ["Queda da bastilha", "Calculo 2"], andamento: [1, 1], status: [0, 1]});
+    function goToTurmaViewAluno (id_turma, mail_aluno, i) {
+      navigation.navigate('TurmaAluno', {id_turma: id_turma, mail_aluno: mail_aluno, index: i});
     }
+
+    async function getInfos () {
+      await getHomeScreenInfo.getScreenInfoAluno(mail)
+        .then((v) => {
+          setInfos(v.data)
+        })
+        .catch((e) => {
+          throw e;
+        })
+    } 
+
+    useEffect(() => {
+      getInfos()
+    }, [])
 
     useEffect(() => {
       const backAction = () => {
@@ -77,8 +96,23 @@ function HomeAluno({props, navigation}) {
 
         <SafeAreaView style={styles.scrollview}>
           <ScrollView>
-            <TurmaCard
-              onPress={goToTurmaViewAluno}
+            
+            {
+              infos.map((v, i) => {
+                return(
+                <TurmaCard
+                  key={i}
+                  onPress={() => goToTurmaViewAluno(v.id_turma, v.mail_aluno, i+1)}
+                  numTurma={i + 1}
+                  numAlunos={v.num_alunos}
+                  numAulas={v.num_aulas}
+                  nomeProf={v.nome_prof}
+              />)
+              })
+            }
+
+            {/* <TurmaCard
+              onPress={() => goToTurmaViewAluno(v.id_turma, v.mail, i+1)}
               numTurma={1}
               numAlunos={105}
               numAulas={25}
@@ -90,7 +124,7 @@ function HomeAluno({props, navigation}) {
               numAlunos={69}
               numAulas={11}
               nomeProf={"Jakubiak"}
-            />
+            /> */}
           </ScrollView>
         </SafeAreaView>
 

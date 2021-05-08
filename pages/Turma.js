@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { NavigationAction } from "@react-navigation/native"
@@ -10,26 +10,43 @@ import AulaCard from '../components/AulaCard';
 import GoBack from '../components/GoBack';
 import AddAulaCard from '../components/AddAulaCard';
 
+import getAulas from './../services/getAulas'
+
 function Turma({route, navigation}) {
 
-    const { name, aulas, status } = route.params;
+    const { id, mail, index } = route.params;
+    const [infos, setInfos] = useState([]);
 
-    function goToAdicionarAluno(){
-        navigation.navigate('AdicionarAluno')
+    async function getInfos() {
+        await getAulas.getAulasProf(id, mail)
+        .then((v) => {
+            setInfos(v.data)
+        })
+        .catch((e) => {
+          throw e;
+        })
     }
 
-    function inspectAula () {
-        navigation.navigate('Aula', {tema: "Queda da Bastilha", dia: "02/10/1994", hora: "08:00"});
+    useEffect(() => {
+        getInfos();
+    }, [])
+
+    function goToAdicionarAluno(){
+        navigation.navigate('AdicionarAluno', {id_turma: id})
+    }
+
+    function inspectAula (id_aula, tema) {
+        navigation.navigate('Aula', {id_aula: id_aula, tema: tema});
     }
 
     function goToAdicionarAula(){
-        navigation.navigate('AdicionarAula')
+        navigation.navigate('AdicionarAula', {id_turma: id, mail: mail})
     }
 
     return (
         <>
             <GoBack
-                name={name}
+                name={"Turma " + index}
                 navigation={navigation}
             />
 
@@ -39,13 +56,22 @@ function Turma({route, navigation}) {
                         onPress={goToAdicionarAula}
                     />
 
-                    <AulaCard
-                        onPress={inspectAula}
-                        tema={"Queda da Bastilha"}
-                        horario={"02/10/1994 - 08:00am"}
-                        status={"Finalizada"}
-                        isProf={true}
-                    />
+                    {
+                        infos.map((v, i) => {
+                            return(
+                            <AulaCard
+                                key={i}
+                                onPress={() => inspectAula(v.id_aula, v.tema)}
+                                tema={v.tema}
+                                horario={v.data + " - " + v.hora}
+                                data={v.data}
+                                hora={v.hora}
+                                id={v.id_aula}
+                                updateAulasAfterDeletion={() => getInfos()}
+                                isProf={true}
+                        />)
+                        })
+                    }
                 
                 </ScrollView>
             </SafeAreaView>

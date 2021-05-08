@@ -37,7 +37,7 @@ function SideMenu(props) {
           </View>
         </View>
 
-        <Text style={styles.olaFulano}>Olá, fulano</Text>
+        <Text style={styles.olaFulano}>Olá, {props.hello}</Text>
 
         <View>
           <Text style={styles.minhaConta}>Minha conta</Text>
@@ -45,7 +45,8 @@ function SideMenu(props) {
           <TouchableOpacity onPress={() => props.meusDados()}>
             <View style={styles.line}>
               <Text style={styles.options}>Meus Dados</Text>
-              <Icon name="chevron-right" size={15} color="#808080"/>
+              <Text style={{fontSize: 15, color: "#808080"}}>❯</Text>
+              {/* <Icon name="chevron-right" size={15} color="#808080"/> */}
             </View>
           </TouchableOpacity>
 
@@ -56,7 +57,8 @@ function SideMenu(props) {
             <TouchableOpacity onPress={() => props.gerenciarNotificacoes()}>
               <View style={styles.line}>
                 <Text style={styles.options}>Gerenciar Notificações</Text>
-                <Icon name="chevron-right" size={15} color="#808080"/>
+                <Text style={{fontSize: 15, color: "#808080"}}>❯</Text>
+                {/* <Icon name="chevron-right" size={15} color="#808080"/> */}
               </View>
             </TouchableOpacity>
           }
@@ -66,7 +68,8 @@ function SideMenu(props) {
             <TouchableOpacity onPress={() => props.criarTurma()}>
               <View style={styles.line}>
                 <Text style={styles.options}>Criar Turma</Text>
-                <Icon name="chevron-right" size={15} color="#808080"/>
+                <Text style={{fontSize: 15, color: "#808080"}}>❯</Text>
+                {/* <Icon name="chevron-right" size={15} color="#808080"/> */}
               </View>
             </TouchableOpacity>
           }
@@ -76,7 +79,8 @@ function SideMenu(props) {
           <TouchableOpacity onPress={() => props.alterarSenha()}>
               <View style={styles.line}>
                 <Text style={styles.options}>Alterar Senha</Text>
-                <Icon name="chevron-right" size={15} color="#808080"/>
+                <Text style={{fontSize: 15, color: "#808080"}}>❯</Text>
+                {/* <Icon name="chevron-right" size={15} color="#808080"/> */}
               </View>
           </TouchableOpacity>
 
