@@ -12,12 +12,15 @@ import TextLink from './TextLink';
 
 function SideMenu(props) {
 
+  const [pic, setPic] = useState('')
+
   async function clickTrocarFoto () {
     try {
       const res = await DocumentPicker.pick({
         type: [DocumentPicker.types.allFiles],
       });
-      await FileViewer.open(res.uri);
+      setPic(res.fileCopyUri)
+      //console.warn(res)
     }
     catch(e) {
       throw e;
@@ -40,7 +43,7 @@ function SideMenu(props) {
 
         <View style={ { alignItems: 'center'} }>
           <Picture
-            uri = {'https://reactnative.dev/img/tiny_logo.png'}
+            uri = {pic == '' ? 'https://reactnative.dev/img/tiny_logo.png' : pic}
           />
 
           <View style={styles.textoFoto}>
