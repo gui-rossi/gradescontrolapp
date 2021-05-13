@@ -3,17 +3,29 @@ import { StyleSheet, CheckBox, Text, View, TouchableOpacity, Button } from 'reac
 import BlueButton from "../components/BlueButton";
 import GoBack from "../components/GoBack";
 
+import postNotificacoes from './../services/postNotificacoes'
+
 function GerenciarNotificacoes({route, navigation}) {
 
-    const { somBefore, notificacaoBefore } = route.params;
+    const { somBefore, notificacaoBefore, mail_aluno } = route.params;
 
     const [isSomSelected, setIsSomSelected] = useState(somBefore);
     const [isNotificacaoSelected, setIsNotificacaoSelected] = useState(notificacaoBefore);
 
-    function saveNotificacoes(){
-
+    async function saveNotificacoes(){
+        await postNotificacoes.putNotificacao(isSomSelected, isNotificacaoSelected, mail_aluno)
+        .then((v) => {
+          navigation.goBack();
+        })
+        .catch((e) => {
+          throw e;
+        })
     }
 
+    useEffect(() => {
+        if (!isNotificacaoSelected)
+            setIsSomSelected(false);
+    }, [isNotificacaoSelected])
 
     return (
         <>
@@ -24,29 +36,31 @@ function GerenciarNotificacoes({route, navigation}) {
 
             <View style={styles.container}>
                 
-                <TouchableOpacity onPress={() => props.alterarSenha()}>
-                    <View style={styles.line}>
-                        <Text style={styles.options}>Notificação de aviso</Text>
-                        <CheckBox
-                            value={isNotificacaoSelected}
-                            onValueChange={setIsNotificacaoSelected}
-                        />
-                    </View>
-                </TouchableOpacity>
+                <View style={styles.line}>
+                    <Text style={styles.options}>Notificação de aviso</Text>
+                    <CheckBox
+                        value={isNotificacaoSelected}
+                        onValueChange={setIsNotificacaoSelected}
+                    />
+                </View>
 
                 <View style={styles.separator}></View>
 
-                <TouchableOpacity onPress={() => props.alterarSenha()}>
-                    <View style={styles.line}>
-                        <Text style={styles.options}>Notificação de som</Text>
-                        <CheckBox
-                            value={isSomSelected}
-                            onValueChange={setIsSomSelected}
-                        />
-                    </View>
-                </TouchableOpacity>
-
-                <View style={styles.separator}></View>
+                {
+                    isNotificacaoSelected && (
+                    <>
+                        <View style={styles.line}>
+                            <Text style={styles.options}>Notificação de som</Text>
+                            <CheckBox
+                                value={isSomSelected}
+                                onValueChange={setIsSomSelected}
+                            />
+                        </View>
+                        
+                        <View style={styles.separator}></View>
+                    </>
+                    )
+                }
 
                 <View style={styles.botao}>
                     <BlueButton

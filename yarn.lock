@@ -6469,9 +6469,9 @@
     "invariant" "^2.2.2"
 
 "react-native-push-notification@^7.2.3":
-  "integrity" "sha512-MWwzGXGD22vQ35roDWBQ4EJl1jS4kuuAAdxqe2C88gULgzT6rQkR9wszl5b5K+hIWqve50qg4zJoSgarr//2KA=="
-  "resolved" "https://registry.npmjs.org/react-native-push-notification/-/react-native-push-notification-7.2.3.tgz"
-  "version" "7.2.3"
+  "integrity" "sha512-5kSKPvDU23uZRmzgKTsGhbwGNvB2tidu1VnInBHP53ZD0VEPSBl5fbpuTfHH98ED+Gp1SCcT2/e6bJWkIspKvg=="
+  "resolved" "https://registry.npmjs.org/react-native-push-notification/-/react-native-push-notification-7.3.1.tgz"
+  "version" "7.3.1"
 
 "react-native-ratings@^7.2.0":
   "integrity" "sha512-oSrkQ4rnpYjCw+d6MPJQghXfrfb3uQKoTJx1exdk7xqzw4jnv3pyu0PAuxCDJk/rfDSD/sirIAudz+zdGxrBog=="

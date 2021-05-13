@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-native";
 import { Text, View, StyleSheet, BackHandler, Alert } from "react-native";
-import { NavigationAction, useNavigationState } from "@react-navigation/native"
+import { NavigationAction, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
@@ -12,6 +12,8 @@ import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
 
 function HomeAluno({props, route, navigation}) {
+
+    const isFocused = useIsFocused()
 
     const { mail } = route.params;
 
@@ -38,7 +40,7 @@ function HomeAluno({props, route, navigation}) {
 
     function goToGerenciarNotificacoes () {
       showModal();
-      navigation.navigate('GerenciarNotificacoes', {somBefore: infos[0].SomNotificacao, notificacaoBefore: infos[0].NotificacaoAviso});
+      navigation.navigate('GerenciarNotificacoes', {somBefore: infos[0].SomNotificacao, notificacaoBefore: infos[0].NotificacaoAviso, mail_aluno: infos[0].mail_aluno});
     }
 
     function goToMeusDados () {
@@ -62,8 +64,15 @@ function HomeAluno({props, route, navigation}) {
     } 
 
     useEffect(() => {
-      getInfos()
+      //getInfos()
     }, [])
+
+    //CHAMADO QUANDO O USUARIO RETORNA A TELA 
+    useEffect(() => {
+      if (isFocused){
+        getInfos();
+      }
+    }, [isFocused])
 
     useEffect(() => {
       const backAction = () => {
