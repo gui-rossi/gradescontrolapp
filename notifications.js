@@ -10,18 +10,21 @@ const showNotification = (channelId, title, message) => {
     });
 };
 
-const showScheduledNotificationWithoutSound = (channelId, title, message, seconds) => {
+const showScheduledNotificationWithoutSound = (id_not, channelId, title, message, seconds) => {
     PushNotification.localNotificationSchedule({
         channelId: channelId,
+        id: id_not,
         title: title,
         message: message,
         date: new Date(Date.now() + seconds * 1000),
+        playSound: false,
     });
 };
 
-const showScheduledNotificationWithSound = (channelId, title, message, seconds) => {
+const showScheduledNotificationWithSound = (id_not, channelId, title, message, seconds) => {
     PushNotification.localNotificationSchedule({
         channelId: channelId,
+        id: id_not,
         title: title,
         message: message,
         soundName: 'default',

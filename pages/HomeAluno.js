@@ -6,10 +6,12 @@ import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
 import getHomeScreenInfo from "../services/getHomeScreenInfo"
+import { showScheduledNotificationWithoutSound, showScheduledNotificationWithSound, cancelAllNotifications, showNotification } from './../notifications'
 
 import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
+import PushNotification from "react-native-push-notification";
 
 function HomeAluno({props, route, navigation}) {
 
@@ -64,7 +66,13 @@ function HomeAluno({props, route, navigation}) {
     } 
 
     useEffect(() => {
-      //getInfos()
+        PushNotification.createChannel({
+            channelId: "notifications", // (required)
+            channelName: "Control Grades Notifications", // (required)
+            channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
+            importance: 4, // (optional) default: 4. Int value of the Android notification importance
+            vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+        });
     }, [])
 
     //CHAMADO QUANDO O USUARIO RETORNA A TELA 

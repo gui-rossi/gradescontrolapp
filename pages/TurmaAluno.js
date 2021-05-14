@@ -14,6 +14,8 @@ import getAulas from './../services/getAulas'
 
 function TurmaAluno({route, navigation}) {
 
+    const isFocused = useIsFocused()
+    
     const { id_turma, mail_aluno, index } = route.params;
     const [infos, setInfos] = useState([]);
 
@@ -27,9 +29,16 @@ function TurmaAluno({route, navigation}) {
         })
     }
 
+    //CHAMADO QUANDO O USUARIO RETORNA A TELA 
     useEffect(() => {
-        getInfos();
-    }, [])
+        if (isFocused){
+            getInfos();
+        }
+    }, [isFocused])
+
+    // useEffect(() => {
+    //     getInfos();
+    // }, [])
 
     return (
         <>
