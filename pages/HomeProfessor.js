@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-native";
 import { Text, View, StyleSheet, BackHandler, Alert } from "react-native";
-import { NavigationAction, useNavigationState } from "@react-navigation/native"
+import { NavigationAction,useIsFocused, useNavigationState } from "@react-navigation/native"
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
@@ -26,7 +26,7 @@ function HomeProfessor({props, route, navigation}) {
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
-    const [pic, setPic] = useState ('');
+    const [foto, setFoto] = useState (null);
 
     const [menu, setMenu] = useState(false);
     const [infos, setInfos] = useState([]);
@@ -69,6 +69,9 @@ function HomeProfessor({props, route, navigation}) {
       await getHomeScreenInfo.getScreenInfoProf(mail)
         .then((v) => {
           setInfos(v.data)
+
+          if (v.data[0].picture_url)
+            setFoto(v.data[0].picture_url)
         })
         .catch((e) => {
           throw e;
@@ -121,15 +124,16 @@ function HomeProfessor({props, route, navigation}) {
           <ScrollView>
             {
               infos.map((v, i) => {
-                return(
-                <TurmaCard
-                  key={i}
-                  onPress={() => goToTurma(v.id_turma, v.mail, i+1)}
-                  numTurma={i + 1}
-                  idTurma={v.id_turma}
-                  numAlunos={v.num_alunos}
-                  numAulas={v.num_aulas}
-              />)
+                if (v.id_turma) //turmas retornam nulo, preciso fazer && para nao colocar turma que nao existe
+                  return(
+                  <TurmaCard
+                    key={i}
+                    onPress={() => goToTurma(v.id_turma, v.mail, i+1)}
+                    numTurma={i + 1}
+                    idTurma={v.id_turma}
+                    numAlunos={v.num_alunos}
+                    numAulas={v.num_aulas}
+                />)
               })
             }
           </ScrollView>
@@ -146,8 +150,8 @@ function HomeProfessor({props, route, navigation}) {
             modalVisible={modalVisible}
             hello={infos[0] ? infos[0].nome_prof : ''}
             mail={infos[0] ? infos[0].mail : ''}
-            pic={pic}
-            set_pic={setPic}
+            foto={foto ? foto : null}
+            set_foto={setFoto}
           />
         </View>
         

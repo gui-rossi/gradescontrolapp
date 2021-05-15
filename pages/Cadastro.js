@@ -22,20 +22,20 @@ function Cadastro({ navigation }) {
 
     async function cadastrarProfessor (values){
         await cadastroService.postCadastroProfessor(values.email, values.nome, values.celular, values.password)
-            .catch(e => {
-                setMessage("Usuário já cadastrado."); 
-                setModalVisible(!modalVisible);
-            })
             .then(() => {
                 setMessage("Usuário cadastrado com sucesso."); 
+                setModalVisible(!modalVisible);
+            })
+            .catch(e => {
+                setMessage("Usuário já cadastrado."); 
                 setModalVisible(!modalVisible);
             })
     }
 
     async function cadastrarAluno (values){
         await cadastroService.postCadastroAluno(values.email, values.nome, values.celular, values.password)
-            .catch(e => {setModalVisible(!modalVisible); throw e})
             .then(() => navigation.navigate('Login'))
+            .catch(e => {setModalVisible(!modalVisible); throw e})
     }
 
     function onClickCadastrar (values) {

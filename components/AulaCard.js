@@ -15,7 +15,7 @@ function AulaCard(props) {
     async function cancelarAula() {
         await deleteAula.deleteAula(props.id)
         .then((v) => {
-            props.updateAulasAfterDeletion;
+            props.updateAulasAfterDeletion.goBack();
             //JOGAR O USUARIO PARA TELA DE HOME SCREEN E FAZER RELOAD pelo endpoint OU PASSAR ESSA FUNCAO PARA FORA para tela de turma
         })
         .catch((e) => {
@@ -48,13 +48,6 @@ function AulaCard(props) {
             setEstado("Finalizada")
         else 
             setEstado("Em progresso")
-
-        // if (dateAula > currentTimePlus2)
-        //     setEstado("Agendada")
-        // else if (dateAula >= currentTime && date <= currentTimePlus2)
-        //     setEstado("Em progresso")
-        // else if (dateAula < currentTime)
-        //     setEstado("Finalizada")
     }
 
     useEffect(() => {
@@ -64,7 +57,7 @@ function AulaCard(props) {
     return (
         <View style={styles.padding}>
             <TouchableOpacity
-                onPress={() => props.onPress()}
+                onPress={props.isProf ? () => props.onPress() : null}
             >
                 <View style={styles.row}>
                     <Text style={styles.font}>{props.tema}</Text>
@@ -91,7 +84,7 @@ function AulaCard(props) {
             </TouchableOpacity>
             
             {
-                props.isAluno && estado == "Em progresso" && !marqueiPresenca &&
+                props.isAluno && estado == "Em progresso" && !props.presenca && !marqueiPresenca &&
                 <View style={styles.link}>
                     <TextLink 
                         text={"Marcar presença"}

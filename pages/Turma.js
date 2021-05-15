@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationAction } from "@react-navigation/native"
+import { NavigationAction, useIsFocused } from "@react-navigation/native"
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native';
@@ -67,18 +67,19 @@ function Turma({route, navigation}) {
 
                     {
                         infos.map((v, i) => {
-                            return(
-                            <AulaCard
-                                key={i}
-                                onPress={() => inspectAula(v.id_aula, v.tema)}
-                                tema={v.tema}
-                                horario={v.data + " - " + v.hora}
-                                data={v.data}
-                                hora={v.hora}
-                                id={v.id_aula}
-                                updateAulasAfterDeletion={() => getInfos()}
-                                isProf={true}
-                        />)
+                            if (v.id_aula)
+                                return(
+                                <AulaCard
+                                    key={i}
+                                    onPress={() => inspectAula(v.id_aula, v.tema)}
+                                    tema={v.tema}
+                                    horario={v.data + " - " + v.hora}
+                                    data={v.data}
+                                    hora={v.hora}
+                                    id={v.id_aula}
+                                    updateAulasAfterDeletion={navigation}
+                                    isProf={true}
+                            />)
                         })
                     }
                 

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationAction } from "@react-navigation/native"
+import { NavigationAction, useIsFocused } from "@react-navigation/native"
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native';
@@ -20,6 +20,7 @@ function Aula({route, navigation}) {
     const isFocused = useIsFocused()
 
     const { id_aula, tema } = route.params;
+
     const [infos, setInfos] = useState([]);
 
     const [modalVisible, setModalVisible] = useState(false);
@@ -39,7 +40,7 @@ function Aula({route, navigation}) {
     }
 
     async function getInfos(){
-        await infosAlunosAula.getStatusPresencaAlunos(2)
+        await infosAlunosAula.getStatusPresencaAlunos(id_aula)
         .then((v) => {
             setInfos(v.data)
         })
@@ -68,7 +69,9 @@ function Aula({route, navigation}) {
 
             <View style={styles.subtitle}>
                 <Text style={styles.font}>
-                    Data: {infos[0] ? infos[0].data : ''} - { infos[0] ? infos[0].hora : ''} 
+                    {
+                        infos[0] ? (`Data: ${infos[0].data} - ${infos[0].hora}`) : (`Sem alunos na turma.`)
+                    }
                 </Text>
             </View>
 
@@ -77,15 +80,16 @@ function Aula({route, navigation}) {
 
                     {
                         infos.map((v, i) => {
-                            return(
-                            <AlunoCard
-                                key={i}
-                                onPress={() => removerFalta(v.mail) ? !v.presente : ''}
-                                aluno={v.nomeAluno}
-                                id_aluno={v.mail}
-                                data={v.data + " - " + v.hora}
-                                status={v.presente ? "Presente" : "Ausente"}
-                        />)
+                            if (v)
+                                return(
+                                <AlunoCard
+                                    key={i}
+                                    onPress={() => removerFalta(v.mail) ? !v.presente : ''}
+                                    aluno={v.nomeAluno}
+                                    id_aluno={v.mail}
+                                    data={v.data + " - " + v.hora}
+                                    status={v.presente ? "Presente" : "Ausente"}
+                            />)
                         })
                     }
                 

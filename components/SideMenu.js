@@ -19,7 +19,7 @@ function SideMenu(props) {
         type: [DocumentPicker.types.images],
       })
       .catch((e) => { throw e })
-      
+
       await alteraFoto.postNewPicture(props.mail, res.fileCopyUri)
       .then((v) => {
         props.set_foto(res.fileCopyUri);

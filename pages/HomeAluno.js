@@ -58,7 +58,9 @@ function HomeAluno({props, route, navigation}) {
       await getHomeScreenInfo.getScreenInfoAluno(mail)
         .then((v) => {
           setInfos(v.data)
-          setFoto(v.data[0].picture_url)
+          
+          if (v.data[0].picture_url)
+            setFoto(v.data[0].picture_url)
         })
         .catch((e) => {
           throw e;
@@ -118,15 +120,16 @@ function HomeAluno({props, route, navigation}) {
             
             {
               infos.map((v, i) => {
-                return(
-                <TurmaCard
-                  key={i}
-                  onPress={() => goToTurmaViewAluno(v.id_turma, v.mail_aluno, i+1)}
-                  numTurma={i + 1}
-                  numAlunos={v.num_alunos}
-                  numAulas={v.num_aulas}
-                  nomeProf={v.nome_prof}
-              />)
+                if (v.id_turma)
+                  return(
+                  <TurmaCard
+                    key={i}
+                    onPress={() => goToTurmaViewAluno(v.id_turma, v.mail_aluno, i+1)}
+                    numTurma={i + 1}
+                    numAlunos={v.num_alunos}
+                    numAulas={v.num_aulas}
+                    nomeProf={v.nome_prof}
+                />)
               })
             }
 

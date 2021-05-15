@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { NavigationAction } from "@react-navigation/native"
+import { NavigationAction, useIsFocused } from "@react-navigation/native"
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import { SafeAreaView } from 'react-native';
 import { ScrollView } from 'react-native';
