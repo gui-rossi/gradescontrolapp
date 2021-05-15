@@ -2,13 +2,36 @@ import { Button } from 'native-base';
 import React, { useState, useEffect, useRef } from 'react';
 import { TouchableWithoutFeedback } from 'react-native';
 import { TouchableOpacity } from 'react-native';
-import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import { Alert, Modal, StyleSheet, Text, Pressable, View, Image } from "react-native";
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
+
+import DocumentPicker from "react-native-document-picker";
+import alteraFoto from "../services/alteraFoto"
 
 import Picture from "../components/Picture";
 import TextLink from './TextLink';
 
 function SideMenu(props) {
+
+  async function clickTrocarFoto () {
+    try {
+      const res = await DocumentPicker.pick({
+        type: [DocumentPicker.types.images],
+      })
+      .catch((e) => { throw e })
+      
+      await alteraFoto.postNewPicture(props.mail, res.fileCopyUri)
+      .then((v) => {
+        props.set_foto(res.fileCopyUri);
+      })
+      .catch((e) => {
+        throw e;
+      })      
+    }
+    catch(e) {
+      throw e;
+    }
+  }
 
   return (
 
@@ -25,14 +48,15 @@ function SideMenu(props) {
       <View style={styles.modalView}>
 
         <View style={ { alignItems: 'center'} }>
+
           <Picture
-            uri = {'https://reactnative.dev/img/tiny_logo.png'}
+            uri = {props.foto}
           />
 
           <View style={styles.textoFoto}>
             <TextLink
               text={"Trocar de foto"}
-              //function={}
+              function={() => clickTrocarFoto()}
             />
           </View>
         </View>

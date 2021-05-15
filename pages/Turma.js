@@ -13,6 +13,8 @@ import AddAulaCard from '../components/AddAulaCard';
 import getAulas from './../services/getAulas'
 
 function Turma({route, navigation}) {
+    
+    const isFocused = useIsFocused()
 
     const { id, mail, index } = route.params;
     const [infos, setInfos] = useState([]);
@@ -27,9 +29,16 @@ function Turma({route, navigation}) {
         })
     }
 
+    //CHAMADO QUANDO O USUARIO RETORNA A TELA 
     useEffect(() => {
-        getInfos();
-    }, [])
+        if (isFocused){
+          getInfos();
+        }
+      }, [isFocused])
+
+    // useEffect(() => {
+    //     getInfos();
+    // }, [])
 
     function goToAdicionarAluno(){
         navigation.navigate('AdicionarAluno', {id_turma: id})

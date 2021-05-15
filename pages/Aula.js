@@ -16,6 +16,8 @@ import removeFalta from './../services/removeFalta'
 
 
 function Aula({route, navigation}) {
+    
+    const isFocused = useIsFocused()
 
     const { id_aula, tema } = route.params;
     const [infos, setInfos] = useState([]);
@@ -46,9 +48,16 @@ function Aula({route, navigation}) {
         })
     }
 
+    //CHAMADO QUANDO O USUARIO RETORNA A TELA 
     useEffect(() => {
-        getInfos();
-    }, [])
+        if (isFocused){
+            getInfos();
+        }
+    }, [isFocused])
+
+    // useEffect(() => {
+    //     getInfos();
+    // }, [])
 
     return (
         <>

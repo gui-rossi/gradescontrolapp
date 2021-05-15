@@ -1,22 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { Modal } from "react-native";
 import { Text, View, StyleSheet, BackHandler, Alert } from "react-native";
-import { NavigationAction, useNavigationState } from "@react-navigation/native"
+import { NavigationAction, useIsFocused, useNavigationState } from "@react-navigation/native"
 import { SafeAreaView } from "react-native";
 import { ScrollView } from "react-native";
 
 import getHomeScreenInfo from "../services/getHomeScreenInfo"
+import { showScheduledNotificationWithoutSound, showScheduledNotificationWithSound, cancelAllNotifications, showNotification } from './../notifications'
 
 import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
+import PushNotification from "react-native-push-notification";
 
 function HomeAluno({props, route, navigation}) {
+
+    const isFocused = useIsFocused()
 
     const { mail } = route.params;
 
     const [modalVisible, setModalVisible] = useState(false);
     const [message, setMessage] = useState("");
+    const [foto, setFoto] = useState (null);
 
     const [menu, setMenu] = useState(false);
     const [infos, setInfos] = useState([]);
@@ -37,7 +42,7 @@ function HomeAluno({props, route, navigation}) {
 
     function goToGerenciarNotificacoes () {
       showModal();
-      navigation.navigate('GerenciarNotificacoes', {somBefore: infos[0].SomNotificacao, notificacaoBefore: infos[0].NotificacaoAviso});
+      navigation.navigate('GerenciarNotificacoes', {somBefore: infos[0].SomNotificacao, notificacaoBefore: infos[0].NotificacaoAviso, mail_aluno: infos[0].mail_aluno});
     }
 
     function goToMeusDados () {
@@ -53,6 +58,7 @@ function HomeAluno({props, route, navigation}) {
       await getHomeScreenInfo.getScreenInfoAluno(mail)
         .then((v) => {
           setInfos(v.data)
+          setFoto(v.data[0].picture_url)
         })
         .catch((e) => {
           throw e;
@@ -60,8 +66,21 @@ function HomeAluno({props, route, navigation}) {
     } 
 
     useEffect(() => {
-      getInfos()
+        PushNotification.createChannel({
+            channelId: "notifications", // (required)
+            channelName: "Control Grades Notifications", // (required)
+            channelDescription: "A channel to categorise your notifications", // (optional) default: undefined.
+            importance: 4, // (optional) default: 4. Int value of the Android notification importance
+            vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+        });
     }, [])
+
+    //CHAMADO QUANDO O USUARIO RETORNA A TELA 
+    useEffect(() => {
+      if (isFocused){
+        getInfos();
+      }
+    }, [isFocused])
 
     useEffect(() => {
       const backAction = () => {
@@ -111,24 +130,12 @@ function HomeAluno({props, route, navigation}) {
               })
             }
 
-            {/* <TurmaCard
-              onPress={() => goToTurmaViewAluno(v.id_turma, v.mail, i+1)}
-              numTurma={1}
-              numAlunos={105}
-              numAulas={25}
-              nomeProf={"Natalia"}
-            />
-            <TurmaCard
-              onPress={goToTurmaViewAluno}
-              numTurma={2}
-              numAlunos={69}
-              numAulas={11}
-              nomeProf={"Jakubiak"}
-            /> */}
           </ScrollView>
         </SafeAreaView>
 
+        
         <View style={modalVisible ? styles.pageWithMenu : styles.page}>
+         
           <SideMenu
             meusDados={goToMeusDados}
             gerenciarNotificacoes={goToGerenciarNotificacoes}
@@ -137,8 +144,14 @@ function HomeAluno({props, route, navigation}) {
             sair={goToLogin}
             setModalVisible={setModalVisible}
             modalVisible={modalVisible}
+            hello={infos[0] ? infos[0].nome_aluno : ''}
+            mail={infos[0] ? infos[0].mail_aluno : ''}
+            foto={foto ? foto : null}
+            set_foto={setFoto}
           />
+          
         </View>
+        
         </>
     );
 }

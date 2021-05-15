@@ -1,9 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { max } from 'react-native-reanimated';
 
 function Picture(props) {
-    
 
     return (
         <View>
