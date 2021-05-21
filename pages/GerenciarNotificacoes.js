@@ -16,57 +16,12 @@ function GerenciarNotificacoes({route, navigation}) {
     const [isSomSelected, setIsSomSelected] = useState(somBefore);
     const [isNotificacaoSelected, setIsNotificacaoSelected] = useState(notificacaoBefore);
 
-    function calculaSegundos(data, hora){
-        let dataAula = new Date (data.split('/')[2] + "-" + data.split('/')[1] + "-" + data.split('/')[0] + "T" + hora.split(':')[0] + ":" + hora.split(':')[1]);
-        let now = new Date();
-        now = now.setHours(now.getHours() - 3);
-        let nowAux = new Date(now);
-
-        let secondsBetween = dataAula - nowAux;
-        return (secondsBetween/1000) //milisegundos
-    }
-
-    function recreateAllNotifications(aulas, somNot, notification){
-        cancelAllNotifications();
-        
-        if (notification && !somNot){ //selecionei so notificacao sem som
-            for (let i = 0; i < aulas.length; i++){
-                console.warn("SEM SOM")
-                let segundos = calculaSegundos(aulas[i].data, aulas[i].hora);
-                
-                if (segundos > 0)
-                    showScheduledNotificationWithoutSound(aulas[i].id_aula, 'notifications', 'Sua aula começou!', `Acompanhe a aula de ${aulas[i].tema}`, segundos)
-            }
-        }
-        else if (notification && somNot){ //selecionei notificacao com som
-            for (let i = 0; i < aulas.length; i++){
-                console.warn("COM SOM")
-                let segundos = calculaSegundos(aulas[i].data, aulas[i].hora);
-                
-                if (segundos > 0)
-                    showScheduledNotificationWithSound(aulas[i].id_aula, 'notifications', 'Sua aula começou!', `Acompanhe a aula de ${aulas[i].tema}`, segundos)
-            }
-        }
-
-    }
-
-    async function editNotifications(somNot, notification){
-        await getAulasTodas.getAllAulas(mail_aluno)
-        .then((v) => {
-            recreateAllNotifications(v.data, somNot, notification)
-            navigation.goBack();
-        })
-        .catch((e) => {
-            throw e;
-        })
-        
-    }
-
     async function saveNotificacoes(){
 
         await postNotificacoes.putNotificacao(isSomSelected, isNotificacaoSelected, mail_aluno)
         .then((v) => {
-            editNotifications(isSomSelected, isNotificacaoSelected);
+            //editNotifications(isSomSelected, isNotificacaoSelected);
+            navigation.goBack();
         })
         .catch((e) => {
             throw e;

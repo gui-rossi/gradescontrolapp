@@ -12,6 +12,7 @@ import MenuButton from "../components/MenuButton";
 import SideMenu from "../components/SideMenu";
 import TurmaCard from "../components/TurmaCard";
 import PushNotification from "react-native-push-notification";
+import getAulasTodas from "../services/getAulasTodas"
 
 function HomeAluno({props, route, navigation}) {
 
@@ -67,6 +68,47 @@ function HomeAluno({props, route, navigation}) {
         })
     } 
 
+    function calculaSegundos(data, hora){
+      let dataAula = new Date (data.split('/')[2] + "-" + data.split('/')[1] + "-" + data.split('/')[0] + "T" + hora.split(':')[0] + ":" + hora.split(':')[1]);
+      let now = new Date();
+      now = now.setHours(now.getHours() - 3);
+      let nowAux = new Date(now);
+
+      let secondsBetween = dataAula - nowAux;
+      return (secondsBetween/1000) //milisegundos
+    }
+
+    function recreateAllNotifications(aulas, somNot, notification){
+      cancelAllNotifications();
+      
+      if (notification && !somNot){ //selecionei so notificacao sem som
+          for (let i = 0; i < aulas.length; i++){
+              let segundos = calculaSegundos(aulas[i].data, aulas[i].hora);
+              
+              if (segundos > 0)
+                  showScheduledNotificationWithoutSound(aulas[i].id_aula, 'notifications', 'Sua aula começou!', `Acompanhe a aula de ${aulas[i].tema}`, segundos)
+          }
+      }
+      else if (notification && somNot){ //selecionei notificacao com som
+          for (let i = 0; i < aulas.length; i++){
+              let segundos = calculaSegundos(aulas[i].data, aulas[i].hora);
+              
+              if (segundos > 0)
+                  showScheduledNotificationWithSound(aulas[i].id_aula, 'notifications', 'Sua aula começou!', `Acompanhe a aula de ${aulas[i].tema}`, segundos)
+          }
+      }
+    }
+
+    async function editNotifications(somNot, notification){
+      await getAulasTodas.getAllAulas(mail)
+      .then((v) => {
+          recreateAllNotifications(v.data, somNot, notification)
+      })
+      .catch((e) => {
+          throw e;
+      })  
+    }
+
     useEffect(() => {
         PushNotification.createChannel({
             channelId: "notifications", // (required)
@@ -83,6 +125,12 @@ function HomeAluno({props, route, navigation}) {
         getInfos();
       }
     }, [isFocused])
+
+    useEffect(() => {
+      if (infos[0]){
+        editNotifications(infos[0].SomNotificacao, infos[0].NotificacaoAviso);
+      }
+    }, [infos])
 
     useEffect(() => {
       const backAction = () => {

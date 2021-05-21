@@ -72,13 +72,13 @@ function Login ({ navigation }) {
                 />
             </View>
 
-            <View style={{marginTop: 20}}>
+            {/* <View style={{marginTop: 20}}>
                 <BlueButton
                     text={"Entrar DEVELOPMENT"}
                     press={devProf}
                     disabled={false}
                 />
-            </View>
+            </View> */}
 
             <GenericModal 
                 message={message}

@@ -16,8 +16,7 @@ const showScheduledNotificationWithoutSound = (id_not, channelId, title, message
         id: id_not,
         title: title,
         message: message,
-        date: new Date(Date.now() + seconds * 1000),
-        playSound: false,
+        date: new Date(Date.now() + seconds * 1000)
     });
 };
 

@@ -102,7 +102,7 @@ function Turma({route, navigation}) {
 const styles = StyleSheet.create({
     scrollview: {
         margin: 12,
-        height: '77%',
+        height: '73%',
     },
     goback: {
         fontWeight: "bold", 
